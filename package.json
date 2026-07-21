@@ -1,0 +1,18 @@
+{
+  "name": "devtools-unlock",
+  "version": "1.0.0",
+  "description": "Unlock DevTools on sites that block debugging (e.g. disable-devtool).",
+  "private": true,
+  "scripts": {
+    "zip": "bash scripts/pack.sh",
+    "build:zip": "bash scripts/pack.sh"
+  },
+  "keywords": [
+    "chrome-extension",
+    "devtools",
+    "anti-debug"
+  ],
+  "author": "mengxianliang",
+  "license": "ISC",
+  "packageManager": "pnpm@10.34.3"
+}
