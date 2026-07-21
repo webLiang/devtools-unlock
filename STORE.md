@@ -12,6 +12,13 @@ pnpm zip
 
 Output: `releases/devtools-unlock_v{version}.zip` containing **only** `extension/` (not analysis, docs, etc.). Keep `package.json` and `extension/manifest.json` versions in sync.
 
+To also commit, tag, and publish a [GitHub Release](https://github.com/webLiang/devtools-unlock/releases):
+
+```bash
+pnpm release:github:dry    # preview
+pnpm release:github:full   # publish (requires gh auth)
+```
+
 ## 2. Upload
 
 1. Open the [Chrome Web Store Developer Dashboard](https://chrome.google.com/webstore/devconsole)

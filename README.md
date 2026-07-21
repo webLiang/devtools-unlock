@@ -2,7 +2,23 @@
 
 > English · [中文](./README.zh-CN.md)
 
-Inject before page scripts run to neutralize anti-debug logic such as [disable-devtool](https://github.com/theajack/disable-devtool), restore DevTools, and stop blank pages, forced reloads, and redirects.
+A Chrome extension that restores normal DevTools on sites that deliberately block inspection.
+
+Injects **before** page scripts run to neutralize anti-debug logic such as [disable-devtool](https://github.com/theajack/disable-devtool) (and similar custom detectors), so opening DevTools no longer blanks the page, force-reloads, or redirects you away.
+
+## Why this project exists
+
+Many sites ship front-end “anti-debug” libraries to discourage casual inspection. A common choice is [disable-devtool](https://github.com/theajack/disable-devtool): once DevTools opens, the page may wipe the DOM, reload, jump to a dead URL, or freeze the tab. Streaming and player sites often go further—detectors live inside **cross-origin iframes**, so the parent page looks fine while the player silently dies.
+
+That is painful when you are a developer trying to **understand how a page works**: network calls, player pipelines, bundling, or embedding patterns. Manual workarounds (console snippets, userscripts, one-off breakpoints) break easily and do not survive a full reload before the detector wins.
+
+This repo started from that exact friction—sites such as [anikai.watch](https://anikai.watch/) (player frames with their own detectors; notes under `analysis/anikai/`)—and grew into a small, per-host unlock tool:
+
+- Patch known detection / punishment paths early (`document_start`, MAIN world)
+- Opt-in **per hostname** (default off; also covers iframe hosts found on the tab)
+- Keep research samples and console/Tampermonkey fallbacks outside the store package
+
+**Intended use:** legitimate front-end research, learning, and debugging. It does not grant access beyond what the browser already loads for you.
 
 ## Layout
 
@@ -20,8 +36,9 @@ devtools-unlock/
 ├── analysis/           ← sample bundles / notes (not in store zip)
 ├── alternatives/       ← console / Tampermonkey fallbacks
 ├── scripts/
-│   └── pack.sh
-├── releases/           ← versioned zip for store / GitHub
+│   ├── pack.sh
+│   └── github-release.mjs
+├── releases/           ← versioned zip + release notes
 ├── STORE.md            ← publishing checklist
 └── PRIVACY.md          ← privacy policy
 ```
@@ -48,6 +65,17 @@ pnpm zip
 ```
 
 Creates `releases/devtools-unlock_v{version}.zip` from `extension/` only. See [STORE.md](./STORE.md).
+
+## GitHub Release
+
+Bump `package.json` and `extension/manifest.json` to the same version, then:
+
+```bash
+pnpm release:github:dry    # pack + preview notes
+pnpm release:github:full   # zip → commit → tag → gh release → push
+```
+
+Cursor command: `/github-release` (see `.cursor/commands/github-release.md`).
 
 ## Non-extension folders
 

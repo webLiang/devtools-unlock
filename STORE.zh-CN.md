@@ -12,6 +12,13 @@ pnpm zip
 
 产物：`releases/devtools-unlock_v{version}.zip`，**仅包含 `extension/` 目录内容**（不含 analysis、docs 等）。请保持 `package.json` 与 `extension/manifest.json` 版本一致。
 
+如需一并提交、打 tag 并发布 [GitHub Release](https://github.com/webLiang/devtools-unlock/releases)：
+
+```bash
+pnpm release:github:dry    # 预览
+pnpm release:github:full   # 正式发布（需 gh 已登录）
+```
+
 ## 2. 上传
 
 1. 登录 [Chrome 开发者信息中心](https://chrome.google.com/webstore/devconsole)
