@@ -1,0 +1,94 @@
+{
+  "extName": {
+    "message": "DevTools Unlock",
+    "description": "Extension name shown in Chrome Web Store and toolbar."
+  },
+  "extDescription": {
+    "message": "Unlock DevTools on sites that block debugging (e.g. disable-devtool): stop forced reloads, page wipes, and detection.",
+    "description": "Short description for the Chrome Web Store listing."
+  },
+  "popupSubtitle": {
+    "message": "Bypass anti-debug scripts such as disable-devtool and restore normal DevTools use.",
+    "description": "Popup subtitle under the title."
+  },
+  "popupToggleLabel": {
+    "message": "Enable unlock for this site",
+    "description": "Checkbox label in the popup."
+  },
+  "popupHint": {
+    "message": "Applies to this site only (including cross-origin video iframes on this page). The page reloads after you toggle. Injected at document_start (MAIN world).",
+    "description": "Help text at the bottom of the popup."
+  },
+  "popupLoading": {
+    "message": "Loading…",
+    "description": "Initial loading placeholder."
+  },
+  "popupSiteUnsupported": {
+    "message": "This page is not supported (open a normal web page)",
+    "description": "Shown when the active tab is not http(s)."
+  },
+  "popupUseOnWebpage": {
+    "message": "Use the toggle on a normal web page",
+    "description": "Status when toggle is disabled on unsupported pages."
+  },
+  "popupStatusLoadFailed": {
+    "message": "Failed to read status",
+    "description": "Status when getStatus fails."
+  },
+  "popupStatusOn": {
+    "message": "Unlock enabled for this site",
+    "description": "Status when unlock is on for the current site."
+  },
+  "popupStatusOnWithEmbeds": {
+    "message": "Unlock enabled for this site ($COUNT$ embed host(s))",
+    "description": "Status when unlock is on and embed hosts were collected.",
+    "placeholders": {
+      "COUNT": {
+        "content": "$1",
+        "example": "1"
+      }
+    }
+  },
+  "popupStatusOff": {
+    "message": "Unlock disabled for this site",
+    "description": "Status when unlock is off for the current site."
+  },
+  "popupStatusOnGeneric": {
+    "message": "Unlock enabled",
+    "description": "Generic on status without a host."
+  },
+  "popupStatusOffGeneric": {
+    "message": "Unlock disabled",
+    "description": "Generic off status without a host."
+  },
+  "popupReloadReloading": {
+    "message": "$PREFIX$, reloading…",
+    "description": "Status after toggle when reload started.",
+    "placeholders": {
+      "PREFIX": {
+        "content": "$1",
+        "example": "Unlock enabled"
+      }
+    }
+  },
+  "popupReloadSkipped": {
+    "message": "$PREFIX$; refresh a normal web page to apply",
+    "description": "Status when auto-reload was skipped.",
+    "placeholders": {
+      "PREFIX": {
+        "content": "$1",
+        "example": "Unlock enabled"
+      }
+    }
+  },
+  "popupReloadFailed": {
+    "message": "$PREFIX$; please reload the page manually",
+    "description": "Status when auto-reload failed.",
+    "placeholders": {
+      "PREFIX": {
+        "content": "$1",
+        "example": "Unlock enabled"
+      }
+    }
+  }
+}

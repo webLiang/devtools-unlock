@@ -1,0 +1,94 @@
+{
+  "extName": {
+    "message": "DevTools Unlock",
+    "description": "Extension name shown in Chrome Web Store and toolbar."
+  },
+  "extDescription": {
+    "message": "解锁被反调试锁定的网站（如 disable-devtool）：拦截强制刷新、清空页面与 DevTools 检测。",
+    "description": "Short description for the Chrome Web Store listing."
+  },
+  "popupSubtitle": {
+    "message": "解锁 disable-devtool 等反调试，恢复正常调试",
+    "description": "Popup subtitle under the title."
+  },
+  "popupToggleLabel": {
+    "message": "启用当前网站解锁",
+    "description": "Checkbox label in the popup."
+  },
+  "popupHint": {
+    "message": "开关仅对当前网站生效（含本页跨域视频 iframe）；开启或关闭后将自动刷新。注入时机为 document_start（MAIN world）。",
+    "description": "Help text at the bottom of the popup."
+  },
+  "popupLoading": {
+    "message": "加载中…",
+    "description": "Initial loading placeholder."
+  },
+  "popupSiteUnsupported": {
+    "message": "当前页面不支持（需普通网页）",
+    "description": "Shown when the active tab is not http(s)."
+  },
+  "popupUseOnWebpage": {
+    "message": "请在普通网页使用开关",
+    "description": "Status when toggle is disabled on unsupported pages."
+  },
+  "popupStatusLoadFailed": {
+    "message": "读取状态失败",
+    "description": "Status when getStatus fails."
+  },
+  "popupStatusOn": {
+    "message": "当前网站解锁已开启",
+    "description": "Status when unlock is on for the current site."
+  },
+  "popupStatusOnWithEmbeds": {
+    "message": "当前网站解锁已开启（含 $COUNT$ 个嵌入页）",
+    "description": "Status when unlock is on and embed hosts were collected.",
+    "placeholders": {
+      "COUNT": {
+        "content": "$1",
+        "example": "1"
+      }
+    }
+  },
+  "popupStatusOff": {
+    "message": "当前网站解锁已关闭",
+    "description": "Status when unlock is off for the current site."
+  },
+  "popupStatusOnGeneric": {
+    "message": "解锁已开启",
+    "description": "Generic on status without a host."
+  },
+  "popupStatusOffGeneric": {
+    "message": "解锁已关闭",
+    "description": "Generic off status without a host."
+  },
+  "popupReloadReloading": {
+    "message": "$PREFIX$，正在刷新…",
+    "description": "Status after toggle when reload started.",
+    "placeholders": {
+      "PREFIX": {
+        "content": "$1",
+        "example": "解锁已开启"
+      }
+    }
+  },
+  "popupReloadSkipped": {
+    "message": "$PREFIX$，请在普通网页刷新生效",
+    "description": "Status when auto-reload was skipped.",
+    "placeholders": {
+      "PREFIX": {
+        "content": "$1",
+        "example": "解锁已开启"
+      }
+    }
+  },
+  "popupReloadFailed": {
+    "message": "$PREFIX$，请手动刷新页面",
+    "description": "Status when auto-reload failed.",
+    "placeholders": {
+      "PREFIX": {
+        "content": "$1",
+        "example": "解锁已开启"
+      }
+    }
+  }
+}

@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>disable-devtool · script-auto</title>
+    <style>
+      body {
+        font-family: system-ui, sans-serif;
+        max-width: 720px;
+        margin: 2rem auto;
+        padding: 0 1rem;
+        line-height: 1.6;
+      }
+      .badge {
+        display: inline-block;
+        padding: 0.2rem 0.5rem;
+        border-radius: 6px;
+        background: #dbeafe;
+        color: #1e40af;
+        font-size: 0.85rem;
+      }
+    </style>
+  </head>
+  <body>
+    <p><span class="badge">CDN · disable-devtool-auto</span></p>
+    <h1>Script attribute auto-init</h1>
+    <p>
+      Same as official docs 1.2: <code>disable-devtool-auto</code> + jsdelivr.
+      Open DevTools to test the DevTools Unlock extension.
+    </p>
+    <p><a href="/">← Back to npm demo home</a></p>
+    <hr />
+    <p id="unlock">Unlock: checking…</p>
+    <p id="running">DisableDevtool.isRunning: …</p>
+
+    <!-- Official docs 1.2: attribute-based auto init -->
+    <script
+      disable-devtool-auto
+      src="https://cdn.jsdelivr.net/npm/disable-devtool@0.3.9"
+      interval="200"
+      disable-menu="false"
+      clear-log="true"
+    ></script>
+    <script>
+      const unlockEl = document.getElementById('unlock');
+      const runningEl = document.getElementById('running');
+      function tick() {
+        unlockEl.textContent =
+          'Unlock __devtoolsUnlockInstalled: ' +
+          (window.__devtoolsUnlockInstalled === true ? 'Yes' : 'No');
+        runningEl.textContent =
+          'DisableDevtool.isRunning: ' +
+          (window.DisableDevtool && window.DisableDevtool.isRunning);
+      }
+      tick();
+      setInterval(tick, 1000);
+    </script>
+  </body>
+</html>
