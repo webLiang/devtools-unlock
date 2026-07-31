@@ -32,7 +32,8 @@ devtools-unlock/
 │   ├── icons/
 │   └── _locales/       ← 商店与 popup 多语言（en、zh_CN）
 ├── docs/
-│   └── force-debug-blocked-sites.md  ← 技术文档（英 + 中）
+│   ├── force-debug-blocked-sites.md  ← 技术文档（英 + 中）
+│   └── chrome-web-store/             ← 商店文案 + 介绍图（完整素材）
 ├── analysis/           ← 样本 bundle 与笔记（不进商店包）
 ├── alternatives/       ← 控制台脚本 / Tampermonkey 替代方案
 ├── scripts/

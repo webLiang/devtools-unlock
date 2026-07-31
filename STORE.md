@@ -70,11 +70,21 @@ Chrome Web Store / Edge add-on pages are excluded (`excludeMatches` in `backgrou
 - **No** third-party transmission
 - Local `chrome.storage.local` only: `hostGroups` / `enabledHosts`
 
-## 5. Screenshot ideas (1280×800 or 640×400)
+## 5. Full listing asset pack (copy + images)
 
-1. Popup showing the current hostname with unlock enabled
-2. Target site Console with `[devtools-unlock] injected…`
-3. Page still usable with DevTools open (vs wipe/reload without the extension)
+Ready-to-upload package:
+
+**[`docs/chrome-web-store/`](./docs/chrome-web-store/)**
+
+| Item | Path |
+|------|------|
+| Checklist | [`docs/chrome-web-store/README.md`](./docs/chrome-web-store/README.md) |
+| English paste copy | [`LISTING.en.md`](./docs/chrome-web-store/LISTING.en.md) |
+| Chinese paste copy | [`LISTING.zh-CN.md`](./docs/chrome-web-store/LISTING.zh-CN.md) |
+| Review justification | [`REVIEW_JUSTIFICATION.md`](./docs/chrome-web-store/REVIEW_JUSTIFICATION.md) |
+| Icon / promo tiles / 5 screenshots | [`docs/chrome-web-store/images/`](./docs/chrome-web-store/images/) |
+
+Sizes: `icon 128`, `promo 440×280`, `marquee 1400×560`, screenshots `1280×800` (CWS-compliant).
 
 ## 6. Versioning
 
@@ -86,3 +96,4 @@ Chrome Web Store / Edge add-on pages are excluded (`excludeMatches` in `backgrou
 
 - State clearly the extension is **not** for bypassing paywalls, DRM, or unlawful use — only restoring DevTools
 - If rejected for broad host access, explain that anti-debug must run before business scripts, so `<all_urls>` + MAIN world (Chrome 111+) is required
+- Full reviewer Q&A: [`docs/chrome-web-store/REVIEW_JUSTIFICATION.md`](./docs/chrome-web-store/REVIEW_JUSTIFICATION.md)

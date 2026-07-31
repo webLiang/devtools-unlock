@@ -32,7 +32,8 @@ devtools-unlock/
 │   ├── icons/
 │   └── _locales/       ← store + popup strings (en, zh_CN)
 ├── docs/
-│   └── force-debug-blocked-sites.md  ← technical guide (EN + zh-CN)
+│   ├── force-debug-blocked-sites.md  ← technical guide (EN + zh-CN)
+│   └── chrome-web-store/             ← store copy + promo images (full pack)
 ├── analysis/           ← sample bundles / notes (not in store zip)
 ├── alternatives/       ← console / Tampermonkey fallbacks
 ├── scripts/

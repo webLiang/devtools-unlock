@@ -70,11 +70,21 @@ pnpm release:github:full   # 正式发布（需 gh 已登录）
 - **不向第三方发送**任何数据
 - 数据仅本地 `chrome.storage.local` 存 `hostGroups` / `enabledHosts`
 
-## 5. 截图建议（1280×800 或 640×400）
+## 5. 完整上架素材（文案 + 介绍图）
 
-1. 扩展 popup：显示当前 hostname，解锁已开启
-2. 目标站点 Console：`[devtools-unlock] injected…` 日志
-3. DevTools 打开后页面仍正常显示（对比未安装时的白屏/刷新）
+已备齐可直接上传的资源包，见：
+
+**[`docs/chrome-web-store/`](./docs/chrome-web-store/)**
+
+| 内容 | 路径 |
+|------|------|
+| 提交清单 | [`docs/chrome-web-store/README.md`](./docs/chrome-web-store/README.md) |
+| 英文粘贴文案 | [`LISTING.en.md`](./docs/chrome-web-store/LISTING.en.md) |
+| 中文粘贴文案 | [`LISTING.zh-CN.md`](./docs/chrome-web-store/LISTING.zh-CN.md) |
+| 审核说明 | [`REVIEW_JUSTIFICATION.md`](./docs/chrome-web-store/REVIEW_JUSTIFICATION.md) |
+| 图标 / 宣传图 / 5 张截图 | [`docs/chrome-web-store/images/`](./docs/chrome-web-store/images/) |
+
+尺寸：`icon 128`、`promo 440×280`、`marquee 1400×560`、截图 `1280×800`（均符合 CWS 要求）。
 
 ## 6. 版本与更新
 
@@ -86,3 +96,4 @@ pnpm release:github:full   # 正式发布（需 gh 已登录）
 
 - 说明扩展**不用于绕过付费墙、DRM 或违法用途**，仅恢复 DevTools 可用性
 - 若被拒「权限过大」，可在详细说明中强调：反调试必须在业务脚本之前注入，故需 `<all_urls>` + MAIN world（Chrome 111+）
+- 完整审核话术见 [`docs/chrome-web-store/REVIEW_JUSTIFICATION.md`](./docs/chrome-web-store/REVIEW_JUSTIFICATION.md)
