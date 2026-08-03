@@ -1,6 +1,6 @@
 {
   "name": "devtools-unlock",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Unlock DevTools on sites that block debugging (e.g. disable-devtool).",
   "private": true,
   "repository": {

@@ -52,6 +52,10 @@ const THEME_HIGHLIGHTS = {
     en: 'Popup and store listing strings updated (English / 简体中文).',
     zh_CN: '弹窗与商店文案更新（English / 简体中文）。',
   },
+  storeListing: {
+    en: 'Published on the Chrome Web Store; README and docs now link to the official listing.',
+    zh_CN: '已上架 Chrome 网上应用店；README 与文档已同步官方商店链接。',
+  },
 };
 
 /** Map i18n message keys to release themes. */
@@ -71,6 +75,10 @@ const COMMIT_THEME_RULES = [
   { theme: 'toolbarIcon', test: /setIcon|toolbar|icon16|icon-off|toolbar icon/i },
   { theme: 'detectorTrap', test: /devtoolsDetector|detector|reload.?timer|setTimeout|unlock\.js/i },
   { theme: 'popupI18n', test: /_locales|i18n|messages\.json|popup/i },
+  {
+    theme: 'storeListing',
+    test: /chrome-web-store|chromewebstore|web store|网上应用店|store listing|上架/i,
+  },
 ];
 
 /** @typedef {{ notesFile?: string, bodyFile?: string, assets: string[], dryRun: boolean, publish: boolean, skipBuild: boolean, commit: boolean, push: boolean, title?: string, commitMessage?: string }} CliOptions */
