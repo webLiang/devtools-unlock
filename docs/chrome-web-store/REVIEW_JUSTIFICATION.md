@@ -3,11 +3,17 @@
 > Use when filling the dashboard questionnaire or responding to reviewer questions.  
 > Keep answers factual and aligned with the shipped `extension/` code.
 
+## Open source
+
+**Repository:** https://github.com/webLiang/devtools-unlock
+
+The extension is fully open source. Reviewers (and users) can audit `extension/` against the public repo: no obfuscation, no remote code loading, no ads. Store listing Official URL / Homepage should point at this repository (or GitHub Pages for ownership verification, with the repo link still in the detailed description).
+
 ## Single purpose
 
 **Purpose:** Restore Chrome DevTools availability on websites that embed anti-debug / anti-DevTools scripts (for example disable-devtool), by neutralizing detection and common punishments (forced reload, DOM wipe, hostile redirect) **only on hostnames the user explicitly enables**.
 
-This is a single, focused developer utility. It does not replace the new tab page, inject ads, change search, download media, or provide unrelated features.
+This is a single, focused open-source developer utility. It does not replace the new tab page, inject ads, change search, download media, or provide unrelated features.
 
 ## Why broad host access (`<all_urls>`)
 
@@ -49,4 +55,4 @@ Users may need the tool on arbitrary sites during legitimate debugging, so host 
 
 ## Suggested one-paragraph reply to reviewers
 
-> DevTools Unlock has a single purpose: on user-enabled sites only, inject an early MAIN-world script that neutralizes common anti-DevTools detectors so developers can open DevTools without forced reloads or page wipes. Host access is broad because anti-debug must run before page scripts and users may enable any site, but the default is off and injection is limited to a local hostname whitelist. We do not collect or transmit user data.
+> DevTools Unlock is open source (https://github.com/webLiang/devtools-unlock) with a single purpose: on user-enabled sites only, inject an early MAIN-world script that neutralizes common anti-DevTools detectors so developers can open DevTools without forced reloads or page wipes. Host access is broad because anti-debug must run before page scripts and users may enable any site, but the default is off and injection is limited to a local hostname whitelist. We do not collect or transmit user data; the shipped package is plain, auditable JS with no remote code.

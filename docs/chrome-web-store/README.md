@@ -3,6 +3,23 @@
 > 本目录为 **DevTools Unlock** 提交 Chrome 网上应用店所需的**完整素材**（文案 + 图标 + 介绍图）。  
 > 上传步骤见仓库根目录 [STORE.zh-CN.md](../../STORE.zh-CN.md) / [STORE.md](../../STORE.md)。
 
+**开源项目** — 商店文案与官方网址应突出开源，并导向仓库：  
+[https://github.com/webLiang/devtools-unlock](https://github.com/webLiang/devtools-unlock)
+
+## 提交时常用 URL（复制）
+
+| 字段 | URL |
+|------|-----|
+| **商店页面（已上架）** | https://chromewebstore.google.com/detail/devtools-unlock/cehphgjpnlhlonahcldfbomncionnhdo |
+| 官方网址 / 主页（突出开源） | https://github.com/webLiang/devtools-unlock |
+| 支持网址 | https://github.com/webLiang/devtools-unlock/issues |
+| 隐私政策 | https://github.com/webLiang/devtools-unlock/blob/master/PRIVACY.md |
+| 隐私政策（中文） | https://github.com/webLiang/devtools-unlock/blob/master/PRIVACY.zh-CN.md |
+| 所有权验证（GitHub Pages） | https://webliang.github.io/devtools-unlock/ |
+
+> 详细说明里须包含仓库链接（见 `LISTING.*.md` 的「OPEN SOURCE / 开源」段）。  
+> 若 Dashboard 要求验证官方站所有权：官方网址暂填 Pages，验证通过后详细说明与支持链接仍指向 GitHub。
+
 ## 目录
 
 ```
@@ -46,12 +63,14 @@ docs/chrome-web-store/
 ### B. 商店 Listing（Dashboard → Store listing）
 
 - [ ] 名称：`DevTools Unlock`
-- [ ] 简短说明 ≤132 字符（见 `LISTING.*.md`）
-- [ ] 详细说明（见 `LISTING.*.md`）
+- [ ] 简短说明 ≤132 字符（见 `LISTING.*.md`，含 open-source / 开源）
+- [ ] 详细说明（见 `LISTING.*.md`，含开源段 + GitHub 链接）
+- [ ] 官方网址 / 主页：`https://github.com/webLiang/devtools-unlock`
+- [ ] 支持网址：`https://github.com/webLiang/devtools-unlock/issues`
 - [ ] 分类：**Developer Tools**
 - [ ] 语言：English + 中文（简体）（与 `_locales` 一致）
 - [ ] 上传 `icon-128` / 小宣传图 / 截图（建议 5 张）/ Marquee
-- [ ] 隐私政策 URL：托管 [PRIVACY.md](../../PRIVACY.md) 后填入（如 GitHub raw / Pages）
+- [ ] 隐私政策：`https://github.com/webLiang/devtools-unlock/blob/master/PRIVACY.md`
 
 ### C. 隐私与权限问卷
 
@@ -62,6 +81,7 @@ docs/chrome-web-store/
 ### D. 合规自检（摘要）
 
 - [ ] 单一用途：恢复 DevTools 可用性
+- [ ] 文案突出开源，并含 https://github.com/webLiang/devtools-unlock
 - [ ] 不绕过付费墙 / DRM / 登录墙
 - [ ] 无远程代码、无混淆、无广告/挖矿
 - [ ] 默认全站 OFF，按站点白名单注入

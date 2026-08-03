@@ -3,6 +3,8 @@
 > Paste into [Developer Dashboard](https://chrome.google.com/webstore/devconsole) → Store listing.  
 > Manifest short description already lives in `_locales/en/messages.json` (`extDescription`).
 
+**Open source:** [https://github.com/webLiang/devtools-unlock](https://github.com/webLiang/devtools-unlock)
+
 ---
 
 ## Item name
@@ -14,15 +16,20 @@ DevTools Unlock
 ## Short description (≤132 characters)
 
 ```
-Unlock DevTools on sites that block debugging (e.g. disable-devtool): stop forced reloads, page wipes, and detection.
+Open-source unlock for sites that block DevTools (e.g. disable-devtool): stop reloads, wipes, and detection.
 ```
 
-Character count: **118** (within limit).
+Character count: **108** (within limit).
 
 ## Detailed description
 
 ```
-DevTools Unlock restores Chrome DevTools on websites that intentionally block debugging.
+DevTools Unlock is an open-source Chrome extension that restores DevTools on websites that intentionally block debugging.
+
+OPEN SOURCE
+Fully open source on GitHub — read the code, audit permissions, file issues, and contribute:
+https://github.com/webLiang/devtools-unlock
+No obfuscation, no remote code, no ads. What you install matches the public repository.
 
 SINGLE PURPOSE
 This extension does one thing: on sites you enable, it injects an unlock script at document_start (MAIN world) to neutralize common anti-DevTools detectors (such as disable-devtool and similar custom scripts). That stops typical punishments like forced reloads, blanking the page, or hostile redirects so you can debug normally.
@@ -48,6 +55,10 @@ No personal data, browsing history, or page content is collected or sent to any 
 
 NOT FOR
 Bypassing paywalls, DRM, account gates, or any unlawful use. This tool only restores DevTools availability for legitimate debugging and research.
+
+SOURCE & SUPPORT
+GitHub: https://github.com/webLiang/devtools-unlock
+Issues: https://github.com/webLiang/devtools-unlock/issues
 ```
 
 ## Category
@@ -61,27 +72,37 @@ Developer Tools
 Primary: English  
 Also provide Chinese (Simplified) listing via locale (see `LISTING.zh-CN.md`).
 
-## Official URL (optional)
+## Official URL
+
+Prefer GitHub repo (highlights open source). If you need ownership verification via HTML file, use the Pages site instead and still link the repo in the description.
 
 ```
 https://github.com/webLiang/devtools-unlock
 ```
 
-## Support / Homepage (optional)
+Ownership verification (GitHub Pages):
+
+```
+https://webliang.github.io/devtools-unlock/
+```
+
+## Support / Homepage
 
 ```
 https://github.com/webLiang/devtools-unlock
+```
+
+Support URL (Issues):
+
+```
+https://github.com/webLiang/devtools-unlock/issues
 ```
 
 ## Privacy policy URL
 
-Host `PRIVACY.md` publicly, then paste that URL here, for example:
-
 ```
-https://github.com/webLiang/devtools-unlock/blob/main/PRIVACY.md
+https://github.com/webLiang/devtools-unlock/blob/master/PRIVACY.md
 ```
-
-(Prefer a rendered Pages / docs URL if you have one.)
 
 ## Promo video (optional)
 

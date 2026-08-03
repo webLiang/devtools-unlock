@@ -2,6 +2,9 @@
 
 > English · [中文](./STORE.zh-CN.md)
 
+**Published listing:**  
+https://chromewebstore.google.com/detail/devtools-unlock/cehphgjpnlhlonahcldfbomncionnhdo
+
 ## 1. Pack
 
 ```bash

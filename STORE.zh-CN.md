@@ -2,6 +2,9 @@
 
 > 中文 · [English](./STORE.md)
 
+**已上架地址：**  
+https://chromewebstore.google.com/detail/devtools-unlock/cehphgjpnlhlonahcldfbomncionnhdo
+
 ## 1. 打包
 
 ```bash

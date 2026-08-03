@@ -2,6 +2,12 @@
 
 > 中文 · [English](./README.md)
 
+[![Chrome 网上应用店](https://img.shields.io/badge/Chrome%20Web%20Store-%E5%AE%89%E8%A3%85-4285F4?logo=googlechrome&logoColor=white)](https://chromewebstore.google.com/detail/devtools-unlock/cehphgjpnlhlonahcldfbomncionnhdo)
+[![GitHub](https://img.shields.io/badge/GitHub-webLiang%2Fdevtools--unlock-181717?logo=github)](https://github.com/webLiang/devtools-unlock)
+
+**Chrome 网上应用店安装：**  
+https://chromewebstore.google.com/detail/devtools-unlock/cehphgjpnlhlonahcldfbomncionnhdo
+
 一款 Chrome 扩展：在故意屏蔽调试的站点上，把 DevTools 恢复成可正常使用的状态。
 
 在页面业务脚本运行**之前**注入，抵消 [disable-devtool](https://github.com/theajack/disable-devtool) 等反调试逻辑（以及同类自研检测），避免一开 DevTools 就被清空页面、强制刷新或跳走。
@@ -19,6 +25,16 @@
 - 研究用样本、控制台 / Tampermonkey 兜底方案放在扩展包外，不进商店 zip
 
 **适用场景：** 正当的前端研究、学习与调试。扩展不会给你浏览器里本来就没有的额外资源权限。
+
+## 安装
+
+| 渠道 | 链接 |
+|------|------|
+| Chrome 网上应用店 | [DevTools Unlock](https://chromewebstore.google.com/detail/devtools-unlock/cehphgjpnlhlonahcldfbomncionnhdo) |
+| 本地加载（开发） | 加载 `extension/` 目录 — 见 [本地调试](#本地调试) |
+| 源码 | [github.com/webLiang/devtools-unlock](https://github.com/webLiang/devtools-unlock) |
+
+安装后：打开目标站点 → 在工具栏 popup 开启解锁 → 页面刷新 → 即可正常使用 DevTools。
 
 ## 目录结构
 
@@ -67,6 +83,9 @@ pnpm zip
 
 在 `releases/` 生成仅含 `extension/` 的 `devtools-unlock_v{version}.zip`。详见 [STORE.zh-CN.md](./STORE.zh-CN.md) / [STORE.md](./STORE.md)。
 
+已上架地址：  
+https://chromewebstore.google.com/detail/devtools-unlock/cehphgjpnlhlonahcldfbomncionnhdo
+
 ## GitHub Release
 
 先把 `package.json` 与 `extension/manifest.json` 升到同一版本，然后：
@@ -91,3 +110,4 @@ Cursor 命令：`/github-release`（见 `.cursor/commands/github-release.md`）�
 
 - [如何强制调试一个不让调试的网站](./docs/force-debug-blocked-sites.zh-CN.md) ([English](./docs/force-debug-blocked-sites.md))
 - [隐私政策](./PRIVACY.zh-CN.md) ([English](./PRIVACY.md))
+- [Chrome 网上应用店上架指南](./STORE.zh-CN.md) ([English](./STORE.md))

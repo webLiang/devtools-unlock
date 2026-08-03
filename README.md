@@ -2,9 +2,15 @@
 
 > English · [中文](./README.zh-CN.md)
 
+[![Chrome Web Store](https://img.shields.io/badge/Chrome%20Web%20Store-Install-4285F4?logo=googlechrome&logoColor=white)](https://chromewebstore.google.com/detail/devtools-unlock/cehphgjpnlhlonahcldfbomncionnhdo)
+[![GitHub](https://img.shields.io/badge/GitHub-webLiang%2Fdevtools--unlock-181717?logo=github)](https://github.com/webLiang/devtools-unlock)
+
+**Install from Chrome Web Store:**  
+https://chromewebstore.google.com/detail/devtools-unlock/cehphgjpnlhlonahcldfbomncionnhdo
+
 A Chrome extension that restores normal DevTools on sites that deliberately block inspection.
 
-Injects **before** page scripts run to neutralize anti-debug logic such as [disable-devtool](https://github.com/theajack/disable-devtool) (and similar custom detectors), so opening DevTools no longer blanks the page, force-reloads, or redirects you away.
+It injects **before** page scripts run and neutralizes anti-debug logic such as [disable-devtool](https://github.com/theajack/disable-devtool) (and similar custom detectors), so opening DevTools no longer blanks the page, force-reloads, or redirects you away.
 
 ## Why this project exists
 
@@ -19,6 +25,16 @@ This repo started from that exact friction—sites such as [anikai.watch](https:
 - Keep research samples and console/Tampermonkey fallbacks outside the store package
 
 **Intended use:** legitimate front-end research, learning, and debugging. It does not grant access beyond what the browser already loads for you.
+
+## Install
+
+| Channel | Link |
+|---------|------|
+| Chrome Web Store | [DevTools Unlock](https://chromewebstore.google.com/detail/devtools-unlock/cehphgjpnlhlonahcldfbomncionnhdo) |
+| Unpacked (dev) | Load the `extension/` folder — see [Local load](#local-load) |
+| Source | [github.com/webLiang/devtools-unlock](https://github.com/webLiang/devtools-unlock) |
+
+After install: open the target site → enable unlock in the toolbar popup → the page reloads → DevTools should work normally.
 
 ## Layout
 
@@ -67,6 +83,9 @@ pnpm zip
 
 Creates `releases/devtools-unlock_v{version}.zip` from `extension/` only. See [STORE.md](./STORE.md).
 
+Published listing:  
+https://chromewebstore.google.com/detail/devtools-unlock/cehphgjpnlhlonahcldfbomncionnhdo
+
 ## GitHub Release
 
 Bump `package.json` and `extension/manifest.json` to the same version, then:
@@ -91,3 +110,4 @@ Cursor command: `/github-release` (see `.cursor/commands/github-release.md`).
 
 - [How to force-debug a site that blocks DevTools](./docs/force-debug-blocked-sites.md) ([中文](./docs/force-debug-blocked-sites.zh-CN.md))
 - [Privacy Policy](./PRIVACY.md) ([中文](./PRIVACY.zh-CN.md))
+- [Chrome Web Store publishing](./STORE.md) ([中文](./STORE.zh-CN.md))

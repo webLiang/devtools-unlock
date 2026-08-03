@@ -3,6 +3,8 @@
 > 粘贴到 [开发者信息中心](https://chrome.google.com/webstore/devconsole) → 商店信息。  
 > Manifest 短描述已在 `_locales/zh_CN/messages.json`（`extDescription`）。
 
+**开源仓库：** [https://github.com/webLiang/devtools-unlock](https://github.com/webLiang/devtools-unlock)
+
 ---
 
 ## 名称
@@ -16,19 +18,24 @@ DevTools Unlock
 英文主短描述（商店主语言常用英文，≤132）：
 
 ```
-Unlock DevTools on sites that block debugging (e.g. disable-devtool): stop forced reloads, page wipes, and detection.
+Open-source unlock for sites that block DevTools (e.g. disable-devtool): stop reloads, wipes, and detection.
 ```
 
-中文短描述（用于中文 locale，注意商店对短描述语言策略）：
+中文短描述（用于中文 locale）：
 
 ```
-解锁被反调试锁定的网站（如 disable-devtool）：拦截强制刷新、清空页面与 DevTools 检测。
+开源扩展：解锁被反调试锁定的网站（如 disable-devtool），拦截强制刷新、清空页面与 DevTools 检测。
 ```
 
 ## 详细说明（中文，可粘贴到中文 locale）
 
 ```
-DevTools Unlock 用于在故意屏蔽调试的网站上，把 Chrome 开发者工具恢复为可正常使用的状态。
+DevTools Unlock 是一款开源的 Chrome 扩展，用于在故意屏蔽调试的网站上，把开发者工具恢复为可正常使用的状态。
+
+【开源】
+本扩展完全开源，欢迎阅读源码、核对权限、提 Issue 与贡献：
+https://github.com/webLiang/devtools-unlock
+无混淆、无远程代码、无广告；商店安装包与公开仓库一致，可审计。
 
 【单一用途】
 本扩展只做一件事：在你启用的站点上，于 document_start（MAIN world）注入解锁脚本，抵消常见的反 DevTools 检测（如 disable-devtool 及同类自研脚本），避免强制刷新、清空页面、恶意跳转等惩罚，从而正常调试。
@@ -54,6 +61,10 @@ DevTools Unlock 用于在故意屏蔽调试的网站上，把 Chrome 开发者�
 
 【不适用】
 不用于绕过付费墙、DRM、登录限制或任何违法用途。本工具仅恢复正当调试研究所需的 DevTools 可用性。
+
+【源码与支持】
+GitHub：https://github.com/webLiang/devtools-unlock
+Issues：https://github.com/webLiang/devtools-unlock/issues
 ```
 
 ## 分类
@@ -62,18 +73,42 @@ DevTools Unlock 用于在故意屏蔽调试的网站上，把 Chrome 开发者�
 Developer Tools（开发者工具）
 ```
 
-## 官方网站 / 支持网址（可选）
+## 官方网站
+
+突出开源时填仓库地址：
 
 ```
 https://github.com/webLiang/devtools-unlock
 ```
 
-## 隐私政策 URL
-
-将仓库 `PRIVACY.zh-CN.md` / `PRIVACY.md` 托管为可公网访问的 URL 后填入，例如：
+若需 HTML 文件验证所有权，官方网址改填 Pages，详细说明里仍保留仓库链接：
 
 ```
-https://github.com/webLiang/devtools-unlock/blob/main/PRIVACY.md
+https://webliang.github.io/devtools-unlock/
+```
+
+## 主页 / 支持网址
+
+```
+https://github.com/webLiang/devtools-unlock
+```
+
+支持（Issues）：
+
+```
+https://github.com/webLiang/devtools-unlock/issues
+```
+
+## 隐私政策 URL
+
+```
+https://github.com/webLiang/devtools-unlock/blob/master/PRIVACY.md
+```
+
+中文版（可选）：
+
+```
+https://github.com/webLiang/devtools-unlock/blob/master/PRIVACY.zh-CN.md
 ```
 
 ## 图片上传
