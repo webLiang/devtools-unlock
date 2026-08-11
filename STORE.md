@@ -30,31 +30,40 @@ pnpm release:github:full   # publish (requires gh auth)
 
 ## 3. Suggested listing copy
 
+> **Open source — highlight in every listing field that supports a URL or description:**  
+> https://github.com/webLiang/devtools-unlock  
+> Full paste-ready modules: [`docs/chrome-web-store/LISTING.en.md`](./docs/chrome-web-store/LISTING.en.md)
+
 ### Name
 
-`DevTools Unlock`
+```
+DevTools Unlock
+```
 
 ### Short description (English, ≤132 characters)
 
-`Unlock DevTools on sites that block debugging (e.g. disable-devtool): stop forced reloads, page wipes, and detection.`
+```
+Open-source unlock for sites that block DevTools (e.g. disable-devtool): stop reloads, wipes, and detection.
+```
+
+### Official / Homepage / Support
+
+```
+https://github.com/webLiang/devtools-unlock
+```
+
+```
+https://github.com/webLiang/devtools-unlock/issues
+```
 
 ### Detailed description
 
-**Single purpose**
+Use the full block in [`LISTING.en.md`](./docs/chrome-web-store/LISTING.en.md) §3 (starts with **OPEN SOURCE** + GitHub link). Summary of sections:
 
-This extension does one thing: at `document_start` it injects an unlock script into pages you enable, neutralizing embedded anti-DevTools detection (such as disable-devtool) so you can open DevTools for debugging, and blocking the wipe / redirect / reload punishments those detectors trigger.
-
-**Who it is for**
-
-- Front-end developers debugging sites that ship anti-debug scripts
-- Security / reverse-engineering work that needs DevTools available
-
-**How to use**
-
-1. After install, all sites are **off** by default (other sites stay untouched)
-2. On the target site, open the toolbar popup and enable unlock for **this site**; the page **reloads** (iframe hosts on that tab are collected too)
-3. Only enabled hostnames (and their collected embed hosts) receive the script
-4. Opening DevTools should no longer blank or crash the page
+- ★ OPEN SOURCE — repo, no obfuscation / remote code / ads  
+- ★ SINGLE PURPOSE — unlock DevTools on user-enabled sites only  
+- ★ HOW TO USE / PERMISSIONS / PRIVACY / NOT FOR  
+- ★ SOURCE & SUPPORT — GitHub + Issues  
 
 ### Permissions (common review questions)
 
@@ -62,9 +71,11 @@ This extension does one thing: at `document_start` it injects an unlock script i
 |------------|-----|
 | `storage` | Persist the per-site hostname whitelist locally (never uploaded) |
 | `scripting` | Register `unlock.js` at `document_start` in MAIN world for whitelisted hosts |
+| `tabs` | Popup needs active tab URL; reload after toggle |
 | `<all_urls>` | Users may enable unlock on any site; injection must run before page scripts |
 
-Chrome Web Store / Edge add-on pages are excluded (`excludeMatches` in `background.js`).
+Chrome Web Store / Edge add-on pages are excluded (`excludeMatches` in `background.js`).  
+Paste blocks: [`REVIEW_JUSTIFICATION.md`](./docs/chrome-web-store/REVIEW_JUSTIFICATION.md).
 
 ## 4. Privacy & compliance
 

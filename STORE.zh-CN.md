@@ -30,31 +30,46 @@ pnpm release:github:full   # 正式发布（需 gh 已登录）
 
 ## 3. 商店 listing 建议文案
 
+> **开源项目 — 简短说明 / 详细说明 / 官方网址 / 主页 / 支持链接均应突出：**  
+> https://github.com/webLiang/devtools-unlock  
+> 按字段完整粘贴：[`docs/chrome-web-store/LISTING.zh-CN.md`](./docs/chrome-web-store/LISTING.zh-CN.md)
+
 ### 名称
 
-`DevTools Unlock`
+```
+DevTools Unlock
+```
 
-### 简短说明（英文，≤132 字符）
+### 简短说明（英文主语言，≤132 字符）
 
-`Unlock DevTools on sites that block debugging (e.g. disable-devtool): stop forced reloads, page wipes, and detection.`
+```
+Open-source unlock for sites that block DevTools (e.g. disable-devtool): stop reloads, wipes, and detection.
+```
+
+中文 locale：
+
+```
+开源扩展：解锁被反调试锁定的网站（如 disable-devtool），拦截强制刷新、清空页面与 DevTools 检测。
+```
+
+### 官方网址 / 主页 / 支持
+
+```
+https://github.com/webLiang/devtools-unlock
+```
+
+```
+https://github.com/webLiang/devtools-unlock/issues
+```
 
 ### 详细说明
 
-**用途（Single purpose）**
+直接复制 [`LISTING.zh-CN.md`](./docs/chrome-web-store/LISTING.zh-CN.md) §3（以 **★ 开源项目** 开头，含仓库链接）。结构概要：
 
-本扩展仅做一件事：在用户启用的站点上，于 `document_start` 注入解锁脚本，抵消页面内嵌的反 DevTools 检测（如 disable-devtool），使用户可以正常打开开发者工具进行调试，并阻止因此触发的恶意跳转、清空页面或无限刷新。
-
-**适用场景**
-
-- 前端开发者在含反调试脚本的站点上调试
-- 安全研究、逆向分析需保留 DevTools 可用性
-
-**使用方式**
-
-1. 安装后默认全部站点关闭（不影响其它网站）
-2. 在目标站点打开工具栏 popup，开启「当前网站解锁」；**开启或关闭后将自动刷新当前页**（会一并解锁本页跨域视频 iframe 的 hostname）
-3. 仅对已开启站点及其当时收录的嵌入域注入解锁脚本；其它站点保持原样
-4. 打开 DevTools 不应再导致页面崩溃或白屏
+- ★ 开源项目 — 可审计、无混淆 / 远程代码 / 广告  
+- ★ 单一用途 — 仅在用户启用站点恢复 DevTools  
+- ★ 使用方法 / 权限 / 隐私 / 不适用  
+- ★ 源码与支持 — GitHub + Issues  
 
 ### 权限说明（审核常见问题）
 
@@ -62,9 +77,11 @@ pnpm release:github:full   # 正式发布（需 gh 已登录）
 |------|------|
 | `storage` | 保存按站点 hostname 白名单，不上传 |
 | `scripting` | 仅对白名单站点在 `document_start` 向 MAIN world 注册 `unlock.js` |
+| `tabs` | 弹窗读取当前标签并在开关后刷新 |
 | `<all_urls>` | 用户可能在任意站点临时开启；需尽早注入才能生效 |
 
-不会在 Chrome 网上应用店、Edge 附加组件页注入（见 `background.js` 的 `excludeMatches`）。
+不会在 Chrome 网上应用店、Edge 附加组件页注入（见 `background.js` 的 `excludeMatches`）。  
+问卷 / 审核粘贴：[`REVIEW_JUSTIFICATION.md`](./docs/chrome-web-store/REVIEW_JUSTIFICATION.md)。
 
 ## 4. 隐私与合规
 

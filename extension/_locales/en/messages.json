@@ -4,7 +4,7 @@
     "description": "Extension name shown in Chrome Web Store and toolbar."
   },
   "extDescription": {
-    "message": "Unlock DevTools on sites that block debugging (e.g. disable-devtool): stop forced reloads, page wipes, and detection.",
+    "message": "Open-source unlock for sites that block DevTools (e.g. disable-devtool): stop reloads, wipes, and detection.",
     "description": "Short description for the Chrome Web Store listing."
   },
   "popupSubtitle": {
