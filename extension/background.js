@@ -9,7 +9,22 @@ const EXCLUDE_MATCHES = [
   '*://chrome.google.com/*',
   '*://chromewebstore.google.com/*',
   '*://microsoftedge.microsoft.com/addons/*',
+  // Cloudflare Turnstile / Managed Challenge widget — never inject unlock here.
+  '*://challenges.cloudflare.com/*',
+  '*://*.challenges.cloudflare.com/*',
 ];
+
+/**
+ * Hostnames that must never receive unlock.js.
+ * Injecting into Turnstile / challenge iframes breaks Cloudflare verification.
+ */
+function isCloudflareChallengeHost(host) {
+  if (!host || typeof host !== 'string') {
+    return false;
+  }
+  const h = host.toLowerCase();
+  return h === 'challenges.cloudflare.com' || h.endsWith('.challenges.cloudflare.com');
+}
 
 /** Whether the URL is a normal http(s) page that can be unlocked. */
 function isSupportedUrl(url) {
@@ -28,7 +43,7 @@ function parseHost(url) {
   }
 }
 
-/** Flatten hostGroups into a deduplicated hostname list. */
+/** Flatten hostGroups into a deduplicated hostname list (drops CF challenge hosts). */
 function flattenHostGroups(groups) {
   const set = new Set();
   if (!groups || typeof groups !== 'object') {
@@ -39,7 +54,7 @@ function flattenHostGroups(groups) {
       continue;
     }
     for (const host of list) {
-      if (typeof host === 'string' && host) {
+      if (typeof host === 'string' && host && !isCloudflareChallengeHost(host)) {
         set.add(host);
       }
     }
@@ -102,7 +117,10 @@ async function saveHostGroups(groups) {
  * @returns {Promise<string[]>}
  */
 async function collectTabHosts(tabId, mainHost) {
-  const hosts = new Set([mainHost]);
+  const hosts = new Set();
+  if (mainHost && !isCloudflareChallengeHost(mainHost)) {
+    hosts.add(mainHost);
+  }
   if (!tabId) {
     return Array.from(hosts);
   }
@@ -140,13 +158,13 @@ async function collectTabHosts(tabId, mainHost) {
     for (const item of results || []) {
       const list = item && item.result;
       if (!Array.isArray(list)) {
-        if (typeof list === 'string' && list) {
+        if (typeof list === 'string' && list && !isCloudflareChallengeHost(list)) {
           hosts.add(list);
         }
         continue;
       }
       for (const host of list) {
-        if (typeof host === 'string' && host) {
+        if (typeof host === 'string' && host && !isCloudflareChallengeHost(host)) {
           hosts.add(host);
         }
       }
