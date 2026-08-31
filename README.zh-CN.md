@@ -111,3 +111,14 @@ Cursor 命令：`/github-release`（见 `.cursor/commands/github-release.md`）�
 - [如何强制调试一个不让调试的网站](./docs/force-debug-blocked-sites.zh-CN.md) ([English](./docs/force-debug-blocked-sites.md))
 - [隐私政策](./PRIVACY.zh-CN.md) ([English](./PRIVACY.md))
 - [Chrome 网上应用店上架指南](./STORE.zh-CN.md) ([English](./STORE.md))
+
+---
+
+## 更多 Chrome 扩展
+
+同一作者的其他开源扩展：
+
+| 扩展 | 说明 |
+|------|------|
+| [Pornhub Video Downloader](https://github.com/webLiang/Pornhub-Video-Downloader-Plugin-v3) | Pornhub、Xvideos 等站点视频多分辨率下载。 |
+| [Header Modify](https://github.com/webLiang/header-modify-extention) | 为当前站点改写请求头（含 iframe）。 |

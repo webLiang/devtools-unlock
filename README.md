@@ -111,3 +111,14 @@ Cursor command: `/github-release` (see `.cursor/commands/github-release.md`).
 - [How to force-debug a site that blocks DevTools](./docs/force-debug-blocked-sites.md) ([中文](./docs/force-debug-blocked-sites.zh-CN.md))
 - [Privacy Policy](./PRIVACY.md) ([中文](./PRIVACY.zh-CN.md))
 - [Chrome Web Store publishing](./STORE.md) ([中文](./STORE.zh-CN.md))
+
+---
+
+## More Chrome extensions
+
+Other open-source tools from the same author:
+
+| Extension | Description |
+|-----------|-------------|
+| [Pornhub Video Downloader](https://github.com/webLiang/Pornhub-Video-Downloader-Plugin-v3) | Multi-resolution video download for Pornhub, Xvideos, and other supported sites. |
+| [Header Modify](https://github.com/webLiang/header-modify-extention) | Rewrite request headers for the current site, including iframes. |
