@@ -18,15 +18,25 @@ if [[ ! -f "$PKG_JSON" ]]; then
   exit 1
 fi
 
-# Prefer package.json (same as Pornhub releases); require manifest version to match.
+# Prefer package.json as source of truth; sync extension/manifest.json when they differ.
 NAME="$(node -p "require('$PKG_JSON').name")"
 VERSION="$(node -p "require('$PKG_JSON').version")"
 MANIFEST_VERSION="$(node -p "require('$MANIFEST').version")"
 
 if [[ "$VERSION" != "$MANIFEST_VERSION" ]]; then
-  echo "error: package.json version ($VERSION) != extension/manifest.json version ($MANIFEST_VERSION)" >&2
-  echo "Bump both to the same value before packing." >&2
-  exit 1
+  MANIFEST="$MANIFEST" VERSION="$VERSION" node -e '
+    const fs = require("fs");
+    const manifestPath = process.env.MANIFEST;
+    const version = process.env.VERSION;
+    const text = fs.readFileSync(manifestPath, "utf8");
+    const next = text.replace(/^(\s*"version"\s*:\s*")[^"]+(")/m, "$1" + version + "$2");
+    if (next === text) {
+      console.error("error: could not update version in " + manifestPath);
+      process.exit(1);
+    }
+    fs.writeFileSync(manifestPath, next);
+  '
+  echo "synced: extension/manifest.json version $MANIFEST_VERSION → $VERSION (from package.json)"
 fi
 
 ZIP_NAME="${NAME}_v${VERSION}.zip"

@@ -1,6 +1,6 @@
 # Chrome Web Store — 上架资源包
 
-> 本目录为 **DevTools Unlock** 提交 Chrome 网上应用店所需的**完整素材**（文案 + 图标 + 介绍图）。  
+> 本目录为 **DevTools Unlock Open** 提交 Chrome 网上应用店所需的**完整素材**（文案 + 图标 + 介绍图）。  
 > 上传步骤见仓库根目录 [STORE.zh-CN.md](../../STORE.zh-CN.md) / [STORE.md](../../STORE.md)。
 
 ## ★ 开源项目（商店文案必须突出）
@@ -82,7 +82,7 @@ docs/chrome-web-store/
 
 ### B. 商店 Listing（Dashboard → Store listing）
 
-- [ ] 名称：`DevTools Unlock`
+- [ ] 名称：`DevTools Unlock Open`
 - [ ] 简短说明 ≤132 字符（含 **open-source / 开源**）
 - [ ] 详细说明（含 **★ OPEN SOURCE / ★ 开源项目** + GitHub 链接）
 - [ ] 官方网址 / 主页：`https://github.com/webLiang/devtools-unlock`

@@ -1,4 +1,4 @@
-# DevTools Unlock — 隐私政策
+# DevTools Unlock Open — 隐私政策
 
 > 中文 · [English](./PRIVACY.md)
 
@@ -6,7 +6,7 @@
 
 ## 摘要
 
-DevTools Unlock **不会**收集、上传或向远程服务器传输任何个人数据或浏览内容。
+DevTools Unlock Open **不会**收集、上传或向远程服务器传输任何个人数据或浏览内容。
 
 ## 本地存储的数据
 

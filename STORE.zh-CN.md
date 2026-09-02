@@ -37,7 +37,7 @@ pnpm release:github:full   # 正式发布（需 gh 已登录）
 ### 名称
 
 ```
-DevTools Unlock
+DevTools Unlock Open
 ```
 
 ### 简短说明（英文主语言，≤132 字符）

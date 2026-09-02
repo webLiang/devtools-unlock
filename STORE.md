@@ -37,7 +37,7 @@ pnpm release:github:full   # publish (requires gh auth)
 ### Name
 
 ```
-DevTools Unlock
+DevTools Unlock Open
 ```
 
 ### Short description (English, ≤132 characters)

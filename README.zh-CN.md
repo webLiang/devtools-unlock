@@ -1,4 +1,4 @@
-# DevTools Unlock
+# DevTools Unlock Open
 
 > 中文 · [English](./README.md)
 
@@ -30,7 +30,7 @@ https://chromewebstore.google.com/detail/devtools-unlock/cehphgjpnlhlonahcldfbom
 
 | 渠道 | 链接 |
 |------|------|
-| Chrome 网上应用店 | [DevTools Unlock](https://chromewebstore.google.com/detail/devtools-unlock/cehphgjpnlhlonahcldfbomncionnhdo) |
+| Chrome 网上应用店 | [DevTools Unlock Open](https://chromewebstore.google.com/detail/devtools-unlock/cehphgjpnlhlonahcldfbomncionnhdo) |
 | 本地加载（开发） | 加载 `extension/` 目录 — 见 [本地调试](#本地调试) |
 | 源码 | [github.com/webLiang/devtools-unlock](https://github.com/webLiang/devtools-unlock) |
 

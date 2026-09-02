@@ -13,13 +13,13 @@
 **English paste：**
 
 ```
-DevTools Unlock is a fully open-source project. Source code, issues, and releases are public at https://github.com/webLiang/devtools-unlock. Reviewers and users can audit the extension/ package against the repository. There is no obfuscation, no remote code loading, and no advertising SDK.
+DevTools Unlock Open is a fully open-source project. Source code, issues, and releases are public at https://github.com/webLiang/devtools-unlock. Reviewers and users can audit the extension/ package against the repository. There is no obfuscation, no remote code loading, and no advertising SDK.
 ```
 
 **中文粘贴：**
 
 ```
-DevTools Unlock 是完全开源项目。源码、Issue 与 Release 公开于 https://github.com/webLiang/devtools-unlock。审核人员与用户可将商店安装包与仓库 extension/ 目录对照审计。无代码混淆、无远程加载可执行逻辑、无广告 SDK。
+DevTools Unlock Open 是完全开源项目。源码、Issue 与 Release 公开于 https://github.com/webLiang/devtools-unlock。审核人员与用户可将商店安装包与仓库 extension/ 目录对照审计。无代码混淆、无远程加载可执行逻辑、无广告 SDK。
 ```
 
 ---
@@ -172,11 +172,11 @@ This extension is not for bypassing paywalls, DRM, or login walls, and not for s
 **English：**
 
 ```
-DevTools Unlock is open source (https://github.com/webLiang/devtools-unlock) with a single purpose: on user-enabled sites only, inject an early MAIN-world script that neutralizes common anti-DevTools detectors so developers can open DevTools without forced reloads or page wipes. Host access is broad because anti-debug must run before page scripts and users may enable any site, but the default is off and injection is limited to a local hostname whitelist. We do not collect or transmit user data; the shipped package is plain, auditable JS with no remote code.
+DevTools Unlock Open is open source (https://github.com/webLiang/devtools-unlock) with a single purpose: on user-enabled sites only, inject an early MAIN-world script that neutralizes common anti-DevTools detectors so developers can open DevTools without forced reloads or page wipes. Host access is broad because anti-debug must run before page scripts and users may enable any site, but the default is off and injection is limited to a local hostname whitelist. We do not collect or transmit user data; the shipped package is plain, auditable JS with no remote code.
 ```
 
 **中文：**
 
 ```
-DevTools Unlock 为开源项目（https://github.com/webLiang/devtools-unlock），单一用途：仅在用户启用的站点上，注入早期 MAIN world 脚本以抵消常见反 DevTools 检测，避免强制刷新或清空页面，便于正当调试。主机权限较宽是因为反调试须早于页面脚本执行、且用户可能启用任意站点；默认关闭，仅本地 hostname 白名单注入。不收集、不传输用户数据；安装包为可审计的明文 JS，无远程代码。
+DevTools Unlock Open 为开源项目（https://github.com/webLiang/devtools-unlock），单一用途：仅在用户启用的站点上，注入早期 MAIN world 脚本以抵消常见反 DevTools 检测，避免强制刷新或清空页面，便于正当调试。主机权限较宽是因为反调试须早于页面脚本执行、且用户可能启用任意站点；默认关闭，仅本地 hostname 白名单注入。不收集、不传输用户数据；安装包为可审计的明文 JS，无远程代码。
 ```

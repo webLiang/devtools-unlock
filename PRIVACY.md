@@ -1,4 +1,4 @@
-# DevTools Unlock — Privacy Policy
+# DevTools Unlock Open — Privacy Policy
 
 > English · [中文](./PRIVACY.zh-CN.md)
 
@@ -6,7 +6,7 @@
 
 ## Summary
 
-DevTools Unlock does **not** collect, store on remote servers, or transmit any personal data or browsing content.
+DevTools Unlock Open does **not** collect, store on remote servers, or transmit any personal data or browsing content.
 
 ## Data stored locally
 

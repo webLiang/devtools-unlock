@@ -194,18 +194,25 @@ function runOrExit(cmd, opts = {}) {
   return result.stdout?.toString().trim() ?? '';
 }
 
-/** Read package.json name and version; require manifest version match. */
+/** Read package.json name/version; sync extension/manifest.json to match. */
 function readPackageMeta() {
   const pkg = JSON.parse(fs.readFileSync(path.join(ROOT, 'package.json'), 'utf8'));
-  const manifest = JSON.parse(
-    fs.readFileSync(path.join(ROOT, 'extension', 'manifest.json'), 'utf8'),
-  );
+  const manifestPath = path.join(ROOT, 'extension', 'manifest.json');
+  const manifestText = fs.readFileSync(manifestPath, 'utf8');
+  const manifest = JSON.parse(manifestText);
   if (pkg.version !== manifest.version) {
-    console.error(
-      `package.json version (${pkg.version}) != extension/manifest.json version (${manifest.version})`,
+    const next = manifestText.replace(
+      /^(\s*"version"\s*:\s*")[^"]+(")/m,
+      `$1${pkg.version}$2`,
     );
-    console.error('Bump both to the same value before releasing.');
-    process.exit(1);
+    if (next === manifestText) {
+      console.error(`could not sync extension/manifest.json version to ${pkg.version}`);
+      process.exit(1);
+    }
+    fs.writeFileSync(manifestPath, next);
+    console.log(
+      `synced: extension/manifest.json version ${manifest.version} → ${pkg.version} (from package.json)`,
+    );
   }
   return { name: pkg.name, version: pkg.version };
 }

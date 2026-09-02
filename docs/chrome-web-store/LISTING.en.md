@@ -10,7 +10,7 @@
 ## 1) Item name
 
 ```
-DevTools Unlock
+DevTools Unlock Open
 ```
 
 ---
@@ -28,7 +28,7 @@ Character count: **108** (within limit).
 ## 3) Detailed description
 
 ```
-DevTools Unlock is a FREE, fully OPEN-SOURCE Chrome extension that restores DevTools on websites that intentionally block debugging.
+DevTools Unlock Open is a FREE, fully OPEN-SOURCE Chrome extension that restores DevTools on websites that intentionally block debugging.
 
 ★ OPEN SOURCE (audit & contribute)
 This project is open source on GitHub. You can read every line of code, verify permissions, report issues, and contribute:

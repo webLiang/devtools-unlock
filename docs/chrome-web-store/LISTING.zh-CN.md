@@ -10,7 +10,7 @@
 ## 1) 名称
 
 ```
-DevTools Unlock
+DevTools Unlock Open
 ```
 
 ---
@@ -34,7 +34,7 @@ Open-source unlock for sites that block DevTools (e.g. disable-devtool): stop re
 ## 3) 详细说明（中文 locale 可直接粘贴）
 
 ```
-DevTools Unlock 是一款完全开源、免费的 Chrome 扩展，用于在故意屏蔽调试的网站上，把开发者工具恢复为可正常使用的状态。
+DevTools Unlock Open 是一款完全开源、免费的 Chrome 扩展，用于在故意屏蔽调试的网站上，把开发者工具恢复为可正常使用的状态。
 
 ★ 开源项目（可审计、可贡献）
 本扩展完全开源，欢迎阅读每一行源码、核对权限、提 Issue 与贡献代码：

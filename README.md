@@ -1,4 +1,4 @@
-# DevTools Unlock
+# DevTools Unlock Open
 
 > English · [中文](./README.zh-CN.md)
 
@@ -30,7 +30,7 @@ This repo started from that exact friction—sites such as [anikai.watch](https:
 
 | Channel | Link |
 |---------|------|
-| Chrome Web Store | [DevTools Unlock](https://chromewebstore.google.com/detail/devtools-unlock/cehphgjpnlhlonahcldfbomncionnhdo) |
+| Chrome Web Store | [DevTools Unlock Open](https://chromewebstore.google.com/detail/devtools-unlock/cehphgjpnlhlonahcldfbomncionnhdo) |
 | Unpacked (dev) | Load the `extension/` folder — see [Local load](#local-load) |
 | Source | [github.com/webLiang/devtools-unlock](https://github.com/webLiang/devtools-unlock) |
 

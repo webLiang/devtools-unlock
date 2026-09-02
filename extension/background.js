@@ -5,6 +5,9 @@
  */
 const SCRIPT_ID = 'devtools-unlock-main';
 
+/** Open-source repository opened once after first install. */
+const GITHUB_REPO_URL = 'https://github.com/webLiang/devtools-unlock';
+
 const EXCLUDE_MATCHES = [
   '*://chrome.google.com/*',
   '*://chromewebstore.google.com/*',
@@ -375,4 +378,14 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
       });
     return true;
   }
+});
+
+/** Open the public GitHub repo on first install only (not on update / reload). */
+chrome.runtime.onInstalled.addListener((details) => {
+  if (details.reason !== 'install') {
+    return;
+  }
+  chrome.tabs.create({ url: GITHUB_REPO_URL }).catch((e) => {
+    console.warn('[devtools-unlock] open GitHub on install failed', e);
+  });
 });
