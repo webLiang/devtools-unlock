@@ -311,13 +311,175 @@ chrome.tabs.onActivated.addListener((activeInfo) => {
     });
 });
 
+/**
+ * Merge newly seen iframe hosts into an already-enabled main-site group,
+ * then re-register content scripts so later navigations get unlock.js.
+ * @param {string} mainHost
+ * @param {string[]} hosts
+ * @returns {Promise<boolean>} true when the whitelist grew
+ */
+async function mergeEmbedHosts(mainHost, hosts) {
+  if (!mainHost) {
+    return false;
+  }
+  const groups = await migrateAndGetHostGroups();
+  if (!Object.prototype.hasOwnProperty.call(groups, mainHost)) {
+    return false;
+  }
+  const prev = Array.isArray(groups[mainHost]) ? groups[mainHost] : [mainHost];
+  const nextSet = new Set(prev);
+  let added = false;
+  for (const host of hosts || []) {
+    if (typeof host === 'string' && host && !isCloudflareChallengeHost(host) && !nextSet.has(host)) {
+      nextSet.add(host);
+      added = true;
+    }
+  }
+  if (!added) {
+    return false;
+  }
+  groups[mainHost] = Array.from(nextSet);
+  await saveHostGroups(groups);
+  await registerUnlockForHosts(flattenHostGroups(groups));
+  return true;
+}
+
+/**
+ * Inject unlock.js into every frame we can reach. Idempotent via __devtoolsUnlockInstalled.
+ * Covers player iframes that appeared after the first registerContentScripts pass.
+ * @param {number} tabId
+ */
+async function injectUnlockAllFrames(tabId) {
+  if (!tabId) {
+    return;
+  }
+  try {
+    await chrome.scripting.executeScript({
+      target: { tabId, allFrames: true },
+      files: ['unlock.js'],
+      world: 'MAIN',
+      injectImmediately: true,
+    });
+  } catch (e) {
+    console.warn('[devtools-unlock] injectUnlockAllFrames failed', e);
+  }
+}
+
+/**
+ * Isolated-world iframe watcher: report embed hosts as MacPlayer / parse iframes appear.
+ * Needed because enabling on the homepage cannot see streamberry (etc.) until play.
+ * @param {number} tabId
+ * @param {string} mainHost
+ */
+async function injectEmbedWatch(tabId, mainHost) {
+  if (!tabId || !mainHost) {
+    return;
+  }
+  try {
+    await chrome.scripting.executeScript({
+      target: { tabId, allFrames: false },
+      world: 'ISOLATED',
+      injectImmediately: true,
+      args: [mainHost],
+      func: (expectedHost) => {
+        if (window.__devtoolsUnlockEmbedWatch) {
+          return;
+        }
+        if (location.hostname !== expectedHost) {
+          return;
+        }
+        window.__devtoolsUnlockEmbedWatch = true;
+        let timer = 0;
+        const report = () => {
+          const hosts = [];
+          try {
+            if (location.hostname) {
+              hosts.push(location.hostname);
+            }
+            const nodes = document.querySelectorAll('iframe[src]');
+            for (let i = 0; i < nodes.length; i++) {
+              try {
+                const host = new URL(nodes[i].src, location.href).hostname;
+                if (host) {
+                  hosts.push(host);
+                }
+              } catch (e) {
+                // ignore
+              }
+            }
+          } catch (e) {
+            // ignore
+          }
+          chrome.runtime.sendMessage({ type: 'embedHostsSeen', hosts }).catch(() => {});
+        };
+        const schedule = () => {
+          if (timer) {
+            clearTimeout(timer);
+          }
+          timer = setTimeout(report, 200);
+        };
+        report();
+        try {
+          const mo = new MutationObserver(schedule);
+          mo.observe(document.documentElement || document, {
+            childList: true,
+            subtree: true,
+            attributes: true,
+            attributeFilter: ['src'],
+          });
+        } catch (e) {
+          schedule();
+        }
+      },
+    });
+  } catch (e) {
+    console.warn('[devtools-unlock] injectEmbedWatch failed', e);
+  }
+}
+
+/** Refresh icon and, for unlocked sites, watch late iframes + inject unlock. */
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
   if (changeInfo.status === 'complete' || changeInfo.url) {
     updateActionIconForTab(tabId, tab.url || changeInfo.url);
   }
+  if (changeInfo.status !== 'complete') {
+    return;
+  }
+  const host = parseHost(tab.url);
+  if (!host) {
+    return;
+  }
+  migrateAndGetHostGroups()
+    .then(async (groups) => {
+      if (!Object.prototype.hasOwnProperty.call(groups, host)) {
+        return;
+      }
+      await injectEmbedWatch(tabId, host);
+      await injectUnlockAllFrames(tabId);
+    })
+    .catch((e) => {
+      console.warn('[devtools-unlock] tabs.onUpdated unlock refresh failed', e);
+    });
 });
 
-chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message.type === 'embedHostsSeen') {
+    const tabId = sender.tab && sender.tab.id;
+    const mainHost = parseHost(sender.tab && sender.tab.url);
+    mergeEmbedHosts(mainHost, message.hosts)
+      .then(async (added) => {
+        if (added && tabId) {
+          await injectUnlockAllFrames(tabId);
+        }
+        sendResponse({ ok: true, added: !!added });
+      })
+      .catch((e) => {
+        console.warn('[devtools-unlock] embedHostsSeen failed', e);
+        sendResponse({ ok: false });
+      });
+    return true;
+  }
+
   if (message.type === 'getStatus') {
     const host = parseHost(message.tabUrl);
     const supported = !!host;

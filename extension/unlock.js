@@ -7,6 +7,7 @@
  * 3. disable-devtool poll interval=200ms (not only 500)
  * 4. ondevtoolopen → same wipe + history.back / 404 redirect
  * 5. core.bundle: Function('debugger') timing + devtoolsFormatters + sessionStorage.devtool
+ * 6. MacCMS / 短视: setInterval(loop, 1) + literal debugger → dump to baidu.com/
  *
  * Cloudflare note: Managed Challenge / Turnstile integrity checks fail if we patch
  * Function/console/navigation on the interstitial, or inject into challenges.cloudflare.com.
@@ -178,6 +179,7 @@
       historyGo: window.history.go,
       windowOpen: window.open,
       windowClose: window.close,
+      windowStop: window.stop,
       consoleLog: console.log,
       consoleTable: console.table,
       consoleClear: console.clear,
@@ -194,6 +196,12 @@
 
     const BLOCK_URL_RE =
       /theajack\.github\.io\/disable-devtool|disable-devtool\/404\.html/i;
+
+    /**
+     * JS-assigned dumps used by MacCMS / 太乙播放器 security.js.
+     * Only homepage paths so search/share URLs still work.
+     */
+    const PUNISH_DUMP_HOST_RE = /(^|\.)(baidu\.com|google\.com)$/i;
 
     const NATIVE_MARK = 'native code';
 
@@ -215,19 +223,54 @@
       return isCloudflareChallengePage();
     }
 
-    /** Whether this timer looks like a disable-devtool / anti-debug poll. */
-    function isDevToolTimer(fn, delay) {
+    /**
+     * Read timer callback source. String timers (setInterval("debugger", 1)) are included.
+     * @param {Function|string|*} fn
+     * @returns {string}
+     */
+    function getTimerCallbackText(fn) {
+      if (typeof fn === 'string') {
+        return fn;
+      }
       if (typeof fn !== 'function') {
-        return false;
+        return '';
       }
-      if (delay !== 200 && delay !== 500 && delay !== 100 && delay !== 150 && delay !== 1000) {
-        return false;
-      }
-      let fnText = '';
       try {
-        fnText = saved.fnToString.call(fn);
+        return saved.fnToString.call(fn);
       } catch (e) {
-        fnText = '';
+        return '';
+      }
+    }
+
+    /**
+     * Whether this timer looks like a disable-devtool / anti-debug poll.
+     * Must catch MacCMS / 短视 theme loops: setInterval(loop, 1) + literal debugger
+     * then $(location).attr('href', 'https://www.baidu.com/'). Delay is often 1ms,
+     * which the old 100/150/200/500/1000 allow-list missed.
+     */
+    function isDevToolTimer(fn, delay) {
+      const fnText = getTimerCallbackText(fn);
+      if (!fnText) {
+        return false;
+      }
+      // Literal debugger timing: any delay. CDP/DevTools makes this exceed timeLimit.
+      if (/\bdebugger\b/i.test(fnText)) {
+        return true;
+      }
+      // MacCMS dump-to-baidu detector even if debugger is hidden behind another call.
+      if (/timeLimit/i.test(fnText) && /baidu\.com/i.test(fnText)) {
+        return true;
+      }
+      if (
+        delay !== 1 &&
+        delay !== 50 &&
+        delay !== 100 &&
+        delay !== 150 &&
+        delay !== 200 &&
+        delay !== 500 &&
+        delay !== 1000
+      ) {
+        return false;
       }
       // core.bundle: _detectLoop(500), console.clear(100), penalty interval(100)
       return /isDevToolOpened|ondevtoolopen|onDevToolOpen|DevToolOpen|detector|clearLog|clearDevTool|markDevTool|f3w5S8C|v1i\(|A7u\(|detect(?:Loop)?|_detectLoo|devtoolsFo|checkers|console\.clear|native code|WJwgqCmf/i.test(
@@ -247,7 +290,9 @@
         const args = Array.prototype.slice.call(arguments);
         try {
           const body = args.length ? String(args[args.length - 1]) : '';
-          if (/^\s*debugger(?:\s*;\s*)?\s*$/.test(body)) {
+          // Also catch Function('debugger;//'+Date.now()) used to defeat "Never pause here"
+          // (each unique source is a new VM file; ignore-once never sticks).
+          if (/^\s*debugger\b/.test(body) && body.length < 120) {
             return function unlockNoopDebugger() {};
           }
         } catch (e) {
@@ -362,29 +407,48 @@
 
     /** Whether this short-delay timer looks like a ca() / e1-player penalty navigation. */
     function isReloadTimer(fn, delay) {
-      if (delay !== 100 && delay !== 500) {
+      const fnText = getTimerCallbackText(fn);
+      if (!fnText) {
         return false;
       }
-      if (typeof fn !== 'function') {
-        return false;
+      if (/\bdebugger\b/i.test(fnText)) {
+        return true;
       }
-      let fnText = '';
-      try {
-        fnText = saved.fnToString.call(fn);
-      } catch (e) {
-        fnText = '';
+      if (delay !== 1 && delay !== 50 && delay !== 100 && delay !== 500) {
+        return false;
       }
       // e1-player penalty callbacks are obfuscated via BB6R/qjOP; may lack location/reload literals
-      return /reload|location|href|v1i|A7u|ca\(|u\(\)|qjOP|BB6R|UXJzb|devtoolsDetector/i.test(
+      return /reload|location|href|v1i|A7u|ca\(|u\(\)|qjOP|BB6R|UXJzb|devtoolsDetector|baidu\.com/i.test(
         fnText
       );
     }
 
+    /**
+     * Whether a JS navigation is an anti-debug punishment
+     * (disable-devtool 404, or baidu/google homepage dump).
+     * User-clicked search/share links are not affected.
+     */
     function isBlockedNavigation(url) {
       if (!url) {
         return false;
       }
-      return BLOCK_URL_RE.test(String(url));
+      const raw = String(url);
+      if (BLOCK_URL_RE.test(raw)) {
+        return true;
+      }
+      try {
+        const dest = new URL(raw, location.href);
+        if (!PUNISH_DUMP_HOST_RE.test(dest.hostname)) {
+          return false;
+        }
+        if (PUNISH_DUMP_HOST_RE.test(location.hostname)) {
+          return false;
+        }
+        const path = dest.pathname || '/';
+        return path === '/' || path === '';
+      } catch (e) {
+        return false;
+      }
     }
 
     function isRootNode(el) {
@@ -574,6 +638,20 @@
         }
         console.warn(TAG, 'blocked window.close()');
       }, saved.windowClose);
+
+      // MacCMS debugger loop calls window.stop() before dumping to baidu, which aborts the player iframe.
+      if (typeof saved.windowStop === 'function') {
+        try {
+          window.stop = mimicNative(function unlockStop() {
+            if (allowCloudflareNavigation()) {
+              return saved.windowStop.apply(window, arguments);
+            }
+            console.warn(TAG, 'blocked window.stop()');
+          }, saved.windowStop);
+        } catch (e) {
+          // ignore
+        }
+      }
     }
 
     /**
@@ -822,6 +900,13 @@
       EventTarget.prototype.addEventListener = saved.addEventListener;
       window.open = saved.windowOpen;
       window.close = saved.windowClose;
+      if (saved.windowStop) {
+        try {
+          window.stop = saved.windowStop;
+        } catch (e) {
+          // ignore
+        }
+      }
       window.history.back = saved.historyBack;
       window.history.go = saved.historyGo;
 
