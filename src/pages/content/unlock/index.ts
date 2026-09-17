@@ -1,3 +1,4 @@
+// @ts-nocheck — MAIN-world unlock: patches page globals; keep as a single IIFE with no imports.
 /**
  * DevTools Unlock — MAIN world injection
  *

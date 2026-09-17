@@ -2,7 +2,7 @@
 
 > English · [中文](./README.zh-CN.md)
 
-Fallback injectors when you cannot install the extension. Same ideas as `extension/unlock.js`; keep them in sync yourself.
+Fallback injectors when you cannot install the extension. Same ideas as `src/pages/content/unlock/index.ts`; keep them in sync yourself.
 
 | File | Usage |
 |------|--------|

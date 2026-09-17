@@ -9,11 +9,15 @@ https://chromewebstore.google.com/detail/devtools-unlock/cehphgjpnlhlonahcldfbom
 
 ```bash
 cd devtools-unlock
-pnpm zip
-# 或: ./scripts/pack.sh
+pnpm build:zip
+# 或: pnpm build && ./scripts/pack.sh
 ```
 
-产物：`releases/devtools-unlock_v{version}.zip`，**仅包含 `extension/` 目录内容**（不含 analysis、docs 等）。请保持 `package.json` 与 `extension/manifest.json` 版本一致。
+产物：`releases/devtools-unlock_v{version}.zip`，**仅包含 `dist/chrome/` 目录内容**（不含 analysis、docs 等）。version 来自 `package.json`（`manifest.js` 写入产物）。
+
+Firefox：`pnpm build:firefox:zip` → `releases/devtools-unlock_v{version}.firefox.zip`。见 [docs/firefox/README.zh-CN.md](./docs/firefox/README.zh-CN.md)。
+
+可选 CRX（CWS 仍上传 zip）：本地生成 `dist.pem`（`openssl genrsa -out dist.pem 2048`，不要提交）后执行 `pnpm build:crx`。
 
 如需一并提交、打 tag 并发布 [GitHub Release](https://github.com/webLiang/devtools-unlock/releases)：
 
@@ -108,12 +112,20 @@ https://github.com/webLiang/devtools-unlock/issues
 
 ## 6. 版本与更新
 
-- 修改 `extension/manifest.json` 的 `version`（语义化版本）
-- 同步更新 `_locales/*/messages.json` 若改了描述
-- 重新 `pnpm zip` 上传新版本
+- 修改 `package.json` 的 `version`（构建时写入 `dist/chrome/manifest.json`）
+- 同步更新 `public/_locales/*/messages.json` 若改了描述
+- 重新 `pnpm build:zip` 上传新版本
 
 ## 7. 审核注意
 
 - 说明扩展**不用于绕过付费墙、DRM 或违法用途**，仅恢复 DevTools 可用性
 - 若被拒「权限过大」，可在详细说明中强调：反调试必须在业务脚本之前注入，故需 `<all_urls>` + MAIN world（Chrome 111+）
 - 完整审核话术见 [`docs/chrome-web-store/REVIEW_JUSTIFICATION.md`](./docs/chrome-web-store/REVIEW_JUSTIFICATION.md)
+
+## 8. Firefox / AMO（可选，不自动提交）
+
+- 附加组件：`pnpm build:firefox:zip`
+- 审核源码（无 `node_modules`）：`pnpm pack:firefox:sources` — 见 [`SOURCE.md`](./SOURCE.md)
+- Gecko ID：`devtools-unlock@webliang`（首次上架后不要改）
+- 最低 Firefox：128
+- 文案草稿：[`docs/firefox/LISTING.zh-CN.md`](./docs/firefox/LISTING.zh-CN.md)

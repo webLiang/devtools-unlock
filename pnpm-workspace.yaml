@@ -1,0 +1,13 @@
+# Single-package repo: pnpm 11 reads allowBuilds / overrides here (strictDepBuilds is on by default).
+packages:
+  - '.'
+
+allowBuilds:
+  '@parcel/watcher': true
+  esbuild: true
+  spawn-sync: true
+
+overrides:
+  vite: 8.1.5
+
+confirmModulesPurge: false

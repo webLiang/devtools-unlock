@@ -1,15 +1,24 @@
 #!/usr/bin/env bash
-# Build Chrome Web Store zip from extension/ only → releases/{name}_v{version}.zip
+# Zip dist/chrome or dist/firefox → releases/{name}_v{version}.zip (.firefox.zip)
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-EXT_DIR="$ROOT/extension"
 OUT_DIR="$ROOT/releases"
 PKG_JSON="$ROOT/package.json"
-MANIFEST="$EXT_DIR/manifest.json"
+FIREFOX=false
 
-if [[ ! -f "$MANIFEST" ]]; then
-  echo "error: missing $MANIFEST" >&2
+if [[ "${1:-}" == "--firefox" ]]; then
+  FIREFOX=true
+fi
+
+if $FIREFOX; then
+  DIST_DIR="$ROOT/dist/firefox"
+else
+  DIST_DIR="$ROOT/dist/chrome"
+fi
+
+if [[ ! -f "$DIST_DIR/manifest.json" ]]; then
+  echo "error: missing $DIST_DIR/manifest.json — run pnpm build or pnpm build:firefox first" >&2
   exit 1
 fi
 
@@ -18,38 +27,40 @@ if [[ ! -f "$PKG_JSON" ]]; then
   exit 1
 fi
 
-# Prefer package.json as source of truth; sync extension/manifest.json when they differ.
-NAME="$(node -p "require('$PKG_JSON').name")"
-VERSION="$(node -p "require('$PKG_JSON').version")"
-MANIFEST_VERSION="$(node -p "require('$MANIFEST').version")"
-
-if [[ "$VERSION" != "$MANIFEST_VERSION" ]]; then
-  MANIFEST="$MANIFEST" VERSION="$VERSION" node -e '
-    const fs = require("fs");
-    const manifestPath = process.env.MANIFEST;
-    const version = process.env.VERSION;
-    const text = fs.readFileSync(manifestPath, "utf8");
-    const next = text.replace(/^(\s*"version"\s*:\s*")[^"]+(")/m, "$1" + version + "$2");
-    if (next === text) {
-      console.error("error: could not update version in " + manifestPath);
-      process.exit(1);
-    }
-    fs.writeFileSync(manifestPath, next);
-  '
-  echo "synced: extension/manifest.json version $MANIFEST_VERSION → $VERSION (from package.json)"
+if [[ ! -f "$DIST_DIR/unlock.js" ]]; then
+  echo "error: missing $DIST_DIR/unlock.js — IIFE build did not run" >&2
+  exit 1
 fi
 
-ZIP_NAME="${NAME}_v${VERSION}.zip"
+NAME="$(node -p "require('$PKG_JSON').name")"
+VERSION="$(node -p "require('$PKG_JSON').version")"
+MANIFEST_VERSION="$(node -p "require('$DIST_DIR/manifest.json').version")"
+
+if [[ "$VERSION" != "$MANIFEST_VERSION" ]]; then
+  echo "error: package.json version $VERSION != $DIST_DIR/manifest.json version $MANIFEST_VERSION" >&2
+  exit 1
+fi
+
+if $FIREFOX; then
+  ZIP_NAME="${NAME}_v${VERSION}.firefox.zip"
+else
+  ZIP_NAME="${NAME}_v${VERSION}.zip"
+fi
 
 mkdir -p "$OUT_DIR"
-# Replace prior zip for this version if present
 rm -f "$OUT_DIR/$ZIP_NAME"
 
-cd "$EXT_DIR"
-zip -r "$OUT_DIR/$ZIP_NAME" . \
-  -x "*.DS_Store" \
-  -x "*__MACOSX*" \
-  -x "*.map"
+(
+  cd "$DIST_DIR"
+  zip -r "$OUT_DIR/$ZIP_NAME" . \
+    -x "*.DS_Store" \
+    -x "*__MACOSX*" \
+    -x "*.map"
+)
 
 echo "created: $OUT_DIR/$ZIP_NAME"
-echo "Upload this zip to the Chrome Web Store Developer Dashboard (do not include analysis/docs)."
+if $FIREFOX; then
+  echo "Upload this zip to addons.mozilla.org (Firefox 128+, Gecko id in manifest)."
+else
+  echo "Upload this zip to the Chrome Web Store Developer Dashboard (do not include analysis/docs)."
+fi

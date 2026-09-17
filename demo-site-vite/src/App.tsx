@@ -110,7 +110,7 @@ function App() {
             <code>http://localhost:5173</code>)
           </li>
           <li>
-            Load <code>../extension/</code> in Chrome, refresh → Unlock should
+            Load <code>../dist/</code> in Chrome (repo-root <code>pnpm build</code>), refresh → Unlock should
             show Yes
           </li>
           <li>

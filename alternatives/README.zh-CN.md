@@ -2,7 +2,7 @@
 
 > 中文 · [English](./README.md)
 
-无法安装扩展时的备选注入方式，逻辑与 `extension/unlock.js` 同源思路，需自行维护同步。
+无法安装扩展时的备选注入方式，逻辑与 `src/pages/content/unlock/index.ts` 同源思路，需自行维护同步。
 
 | 文件 | 用法 |
 |------|------|

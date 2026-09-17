@@ -9,13 +9,13 @@ Publish a GitHub Release: https://github.com/webLiang/devtools-unlock/releases
 
 **Script**: `scripts/github-release.mjs`  
 **One-shot command**: `pnpm release:github:full` (= zip → notes → commit → tag → gh release → push)  
-**Version**: root `package.json` `version` **and** `extension/manifest.json` `version` (must match and be bumped; `v<version>` must not already exist on GitHub)
+**Version**: root `package.json` `version` (copied into `dist/chrome/manifest.json` / `dist/firefox/manifest.json` at build; `v<version>` must not already exist on GitHub)
 
 ---
 
 ## Pre-flight checks
 
-1. Bump `package.json` **and** `extension/manifest.json` version above the latest tag (`git tag -l 'v*' --sort=-v:refname | head -1`).
+1. Bump `package.json` version above the latest tag (`git tag -l 'v*' --sort=-v:refname | head -1`).
 2. GitHub CLI installed and authenticated: `gh auth status`  
    - Install (macOS): `brew install gh` then `gh auth login`
 3. On the branch you intend to push (usually `main` / `master`).
@@ -47,7 +47,7 @@ node scripts/github-release.mjs --full
 
 **Pipeline (automatic, in order):**
 
-1. `pnpm zip` → `releases/devtools-unlock_v<version>.zip`
+1. `pnpm build:zip` + `pnpm build:firefox:zip` → Chrome `.zip` and Firefox `.firefox.zip`
 2. Generate `releases/RELEASE_NOTES_v<version>.md` from git log + locale/theme mapping (see **Release notes format** below)
 3. `git add -A && git commit -m "chore: release v<version>"` (skip if tree already clean)
 4. Create annotated tag `v<version>`

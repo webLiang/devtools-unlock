@@ -42,7 +42,7 @@ https://github.com/webLiang/devtools-unlock
 
 • 社区开源项目，扩展内无付费墙
 • 无代码混淆、无远程加载可执行逻辑、无广告、无追踪 SDK
-• Chrome 网上应用店安装包与公开仓库 extension/ 目录一致，可对照审计
+• Chrome 网上应用店安装包与公开仓库 `pnpm build` 产物 dist/chrome 一致，可对照审计
 • 版本与更新说明：https://github.com/webLiang/devtools-unlock/releases
 
 ★ 单一用途

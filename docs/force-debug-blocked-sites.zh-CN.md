@@ -761,12 +761,8 @@ disable-devtool 初始化，200ms 轮询（L）
 
 ```
 devtools-unlock/
-├── extension/           # 上架包（加载此目录）
-│   ├── manifest.json
-│   ├── background.js    # 动态 registerContentScripts
-│   ├── unlock.js        # MAIN world 解锁逻辑
-│   ├── popup.html/js    # 启用/禁用（需刷新页面）
-│   └── icons/
+├── dist/                # 上架包（pnpm build 后加载此目录）
+├── src/pages/           # background / popup / unlock IIFE
 ├── analysis/            # 样本 bundle（不进商店）
 ├── alternatives/        # 控制台 / Userscript
 └── docs/force-debug-blocked-sites.zh-CN.md  # 本文档
@@ -776,7 +772,7 @@ devtools-unlock/
 
 ## 八、安装与验证
 
-1. `chrome://extensions/` → 开发者模式 → 加载已解压的扩展程序 → 选择 **`extension/`** 目录  
+1. 仓库根目录 `pnpm build` → `chrome://extensions/` → 开发者模式 → 加载已解压的扩展程序 → 选择 **`dist/chrome/`** 目录  
 2. 打开目标站 → **刷新页面**  
 3. Console 应出现：`[devtools-unlock] 扩展已注入 — 可正常打开 DevTools`  
 4. 打开 DevTools 后若站点仍尝试惩罚，可见拦截日志，例如：
@@ -806,7 +802,7 @@ devtools-unlock/
 
 - **现象**：`拦截根节点清空`（**N**，正常）+ `slPz` / `qjOP` undefined（**U**，旧版 Unlock 引入）  
 - **修复**：`installNativeToStringMask` 对页面 function 返回真实 `toString`；**M** 仍用 `mimicNative`  
-- **样本**：`analysis/client.js` 第 1–11 行引导、`extension/unlock.js` 第 165–183 行  
+- **样本**：`analysis/client.js` 第 1–11 行引导、`src/pages/content/unlock/index.ts` 中 `installNativeToStringMask`  
 
 ---
 
@@ -814,8 +810,8 @@ devtools-unlock/
 
 | 文件 | 说明 |
 |------|------|
-| `extension/unlock.js` | MAIN world 解锁实现 |
-| `extension/background.js` | 动态注册注入 |
+| `src/pages/content/unlock/index.ts` | MAIN world 解锁实现（构建为 dist/chrome/unlock.js） |
+| `src/pages/background/index.ts` | 动态注册注入 |
 | `analysis/scripts-CbWe9mAN.deobfuscated.js` | 字符串反混淆完整版（8291 处） |
 | `analysis/scripts-CbWe9mAN.anti-devtool.extract.js` | 反调试逻辑可读摘要 |
 | `analysis/client.js` | 业务/播放器混淆样本；`YppH.slPz` / `fn.toString()` 密钥（**§6.3.8**、**U**） |

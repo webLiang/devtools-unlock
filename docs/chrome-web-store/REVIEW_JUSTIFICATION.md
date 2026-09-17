@@ -1,7 +1,7 @@
 # Chrome Web Store — Review justification（审核 / 问卷粘贴稿）
 
 > 用于 Developer Dashboard 问卷、权限说明、或回复审核员。  
-> 与已发布代码 `extension/` 及开源仓库保持一致。  
+> 与已发布代码 `dist/chrome/` 及开源仓库保持一致。  
 > **开源仓库：** https://github.com/webLiang/devtools-unlock
 
 商店 Listing 字段粘贴见：`LISTING.en.md` / `LISTING.zh-CN.md`。
@@ -13,13 +13,13 @@
 **English paste：**
 
 ```
-DevTools Unlock Open is a fully open-source project. Source code, issues, and releases are public at https://github.com/webLiang/devtools-unlock. Reviewers and users can audit the extension/ package against the repository. There is no obfuscation, no remote code loading, and no advertising SDK.
+DevTools Unlock Open is a fully open-source project. Source code, issues, and releases are public at https://github.com/webLiang/devtools-unlock. Reviewers and users can audit the store package against the repository (`dist/chrome` after `pnpm build`). There is no obfuscation, no remote code loading, and no advertising SDK.
 ```
 
 **中文粘贴：**
 
 ```
-DevTools Unlock Open 是完全开源项目。源码、Issue 与 Release 公开于 https://github.com/webLiang/devtools-unlock。审核人员与用户可将商店安装包与仓库 extension/ 目录对照审计。无代码混淆、无远程加载可执行逻辑、无广告 SDK。
+DevTools Unlock Open 是完全开源项目。源码、Issue 与 Release 公开于 https://github.com/webLiang/devtools-unlock。审核人员与用户可将商店安装包与仓库构建产物 dist/chrome 对照审计。无代码混淆、无远程加载可执行逻辑、无广告 SDK。
 ```
 
 ---

@@ -9,11 +9,15 @@ https://chromewebstore.google.com/detail/devtools-unlock/cehphgjpnlhlonahcldfbom
 
 ```bash
 cd devtools-unlock
-pnpm zip
-# or: ./scripts/pack.sh
+pnpm build:zip
+# or: pnpm build && ./scripts/pack.sh
 ```
 
-Output: `releases/devtools-unlock_v{version}.zip` containing **only** `extension/` (not analysis, docs, etc.). Keep `package.json` and `extension/manifest.json` versions in sync.
+Output: `releases/devtools-unlock_v{version}.zip` containing **only the contents of `dist/chrome/`** (not analysis, docs, etc.). Version comes from `package.json` via `manifest.js`.
+
+Firefox: `pnpm build:firefox:zip` → `releases/devtools-unlock_v{version}.firefox.zip`. See [docs/firefox/README.md](./docs/firefox/README.md).
+
+Optional CRX for sideload (not used by CWS): generate `dist.pem` locally (`openssl genrsa -out dist.pem 2048`, never commit) then `pnpm build:crx`.
 
 To also commit, tag, and publish a [GitHub Release](https://github.com/webLiang/devtools-unlock/releases):
 
@@ -74,7 +78,7 @@ Use the full block in [`LISTING.en.md`](./docs/chrome-web-store/LISTING.en.md) �
 | `tabs` | Popup needs active tab URL; reload after toggle |
 | `<all_urls>` | Users may enable unlock on any site; injection must run before page scripts |
 
-Chrome Web Store / Edge add-on pages are excluded (`excludeMatches` in `background.js`).  
+Chrome Web Store / Edge add-on pages are excluded (`excludeMatches` in the background script).  
 Paste blocks: [`REVIEW_JUSTIFICATION.md`](./docs/chrome-web-store/REVIEW_JUSTIFICATION.md).
 
 ## 4. Privacy & compliance
@@ -102,12 +106,20 @@ Sizes: `icon 128`, `promo 440×280`, `marquee 1400×560`, screenshots `1280×800
 
 ## 6. Versioning
 
-- Bump `extension/manifest.json` `version`
+- Bump `package.json` `version` (written into `dist/chrome/manifest.json` by `manifest.js`)
 - Update `_locales/*/messages.json` if store copy changes
-- Re-run `pnpm zip` and upload
+- Re-run `pnpm build:zip` and upload
 
 ## 7. Review notes
 
 - State clearly the extension is **not** for bypassing paywalls, DRM, or unlawful use — only restoring DevTools
 - If rejected for broad host access, explain that anti-debug must run before business scripts, so `<all_urls>` + MAIN world (Chrome 111+) is required
 - Full reviewer Q&A: [`docs/chrome-web-store/REVIEW_JUSTIFICATION.md`](./docs/chrome-web-store/REVIEW_JUSTIFICATION.md)
+
+## 8. Firefox / AMO (optional, not auto-submitted)
+
+- Add-on: `pnpm build:firefox:zip`
+- Source (no `node_modules`): `pnpm pack:firefox:sources` — see [`SOURCE.md`](./SOURCE.md)
+- Gecko ID: `devtools-unlock@webliang` (do not change after first AMO listing)
+- Minimum Firefox: 128
+- Listing draft: [`docs/firefox/LISTING.en.md`](./docs/firefox/LISTING.en.md)

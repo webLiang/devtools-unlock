@@ -8,7 +8,18 @@
 **Chrome 网上应用店安装：**  
 https://chromewebstore.google.com/detail/devtools-unlock/cehphgjpnlhlonahcldfbomncionnhdo
 
-一款 Chrome 扩展：在故意屏蔽调试的站点上，把 DevTools 恢复成可正常使用的状态。
+<p align="center">
+  <strong>要做 Chrome 扩展？</strong>
+  从
+  <a href="https://github.com/webLiang/chrome-extension-boilerplate-ai"><strong>chrome-extension-boilerplate-ai</strong></a>
+  起步
+  — Vite 8 · MV3 · 生产构建通常约 100–300ms。
+  <a href="https://github.com/webLiang/chrome-extension-boilerplate-ai/blob/main/README.zh_CN.md#%E7%AE%80%E4%BB%8B">文档</a>
+  ·
+  <a href="https://github.com/webLiang/chrome-extension-boilerplate-ai"><img alt="GitHub stars" src="https://img.shields.io/github/stars/webLiang/chrome-extension-boilerplate-ai?style=flat" /></a>
+</p>
+
+一款 Chrome / Firefox 扩展：在故意屏蔽调试的站点上，把 DevTools 恢复成可正常使用的状态。
 
 在页面业务脚本运行**之前**注入，抵消 [disable-devtool](https://github.com/theajack/disable-devtool) 等反调试逻辑（以及同类自研检测），避免一开 DevTools 就被清空页面、强制刷新或跳走。
 
@@ -31,7 +42,8 @@ https://chromewebstore.google.com/detail/devtools-unlock/cehphgjpnlhlonahcldfbom
 | 渠道 | 链接 |
 |------|------|
 | Chrome 网上应用店 | [DevTools Unlock Open](https://chromewebstore.google.com/detail/devtools-unlock/cehphgjpnlhlonahcldfbomncionnhdo) |
-| 本地加载（开发） | 加载 `extension/` 目录 — 见 [本地调试](#本地调试) |
+| 本地加载 Chrome | `pnpm build` 后加载 **`dist/chrome`** — 见 [本地调试](#本地调试) |
+| Firefox 128+ | `pnpm build:firefox` — 见下文 Firefox |
 | 源码 | [github.com/webLiang/devtools-unlock](https://github.com/webLiang/devtools-unlock) |
 
 安装后：打开目标站点 → 在工具栏 popup 开启解锁 → 页面刷新 → 即可正常使用 DevTools。
@@ -40,32 +52,43 @@ https://chromewebstore.google.com/detail/devtools-unlock/cehphgjpnlhlonahcldfbom
 
 ```
 devtools-unlock/
-├── extension/          ← 上架 Chrome 网上应用店：只打包此目录
-│   ├── manifest.json
-│   ├── background.js
-│   ├── unlock.js
-│   ├── popup.html / popup.js
-│   ├── icons/
-│   └── _locales/       ← 商店与 popup 多语言（en、zh_CN）
+├── src/pages/          ← background、popup、unlock IIFE、embedWatch
+├── public/             ← _locales + 图标（打进 dist）
+├── manifest.js         ← MV3 源（version 来自 package.json）
+├── dist/chrome/        ← Chrome 未打包扩展
+├── dist/firefox/       ← Firefox 未打包扩展
 ├── docs/
-│   ├── force-debug-blocked-sites.md  ← 技术文档（英 + 中）
-│   └── chrome-web-store/             ← 商店文案 + 介绍图（完整素材）
+│   ├── firefox/        ← Firefox / AMO 说明
+│   ├── force-debug-blocked-sites.md
+│   └── chrome-web-store/
 ├── analysis/           ← 样本 bundle 与笔记（不进商店包）
 ├── alternatives/       ← 控制台脚本 / Tampermonkey 替代方案
-├── scripts/
-│   ├── pack.sh
-│   └── github-release.mjs
+├── demo-site-vite/     ← 本地 disable-devtool 演示页
+├── scripts/            ← pack.sh、github-release、IIFE 构建、AMO 源码包
 ├── releases/           ← 带版本号的 zip 与 Release Notes
+├── SOURCE.md           ← AMO 审核员复现构建步骤
 ├── STORE.md            ← 上架步骤
 └── PRIVACY.md          ← 隐私政策
 ```
 
 ## 本地调试
 
-1. 打开 `chrome://extensions/` → 开启「开发者模式」
-2. 「加载已解压的扩展程序」→ 选择 **`extension/`** 文件夹（不是仓库根目录）
-3. 打开目标站点，在 popup 中开启解锁（页面会刷新）
-4. Console 应出现：`[devtools-unlock] injected — DevTools should work normally`
+### Chrome
+
+1. `pnpm install` 后 `pnpm build`（开发用 `pnpm dev`）
+2. 打开 `chrome://extensions/` → 开启「开发者模式」
+3. 「加载已解压的扩展程序」→ 选择 **`dist/chrome`** 文件夹（不是仓库根目录）
+4. 打开目标站点，在 popup 中开启解锁（页面会刷新）
+5. Console 应出现：`[devtools-unlock] injected — DevTools should work normally`
+
+### Firefox
+
+1. `pnpm build:firefox`（开发用 `pnpm dev:firefox`）
+2. 打开 `about:debugging#/runtime/this-firefox`
+3. **临时载入附加组件…** → 选择 `dist/firefox/manifest.json`
+4. 临时附加组件在 Firefox 退出后消失。持久安装：`pnpm build:firefox:zip`（Gecko ID `devtools-unlock@webliang`，需 Firefox **128+**）。
+
+详见 [docs/firefox/README.zh-CN.md](./docs/firefox/README.zh-CN.md)。
 
 ### 按站点行为
 
@@ -77,18 +100,20 @@ devtools-unlock/
 ## 打包上架
 
 ```bash
-pnpm zip
-# 或: ./scripts/pack.sh
+pnpm build:all            # Chrome → dist/chrome，Firefox → dist/firefox
+pnpm build:zip            # Chrome → releases/devtools-unlock_v{version}.zip
+pnpm build:firefox:zip    # Firefox → releases/devtools-unlock_v{version}.firefox.zip
+pnpm pack:firefox:sources # AMO 审核源码包（不含 node_modules）→ *.firefox-sources.zip
 ```
 
-在 `releases/` 生成仅含 `extension/` 的 `devtools-unlock_v{version}.zip`。详见 [STORE.zh-CN.md](./STORE.zh-CN.md) / [STORE.md](./STORE.md)。
+商店 zip **只含 `dist/chrome` 或 `dist/firefox` 目录内容**（manifest 在 zip 根）。AMO 还要源码包：见 [SOURCE.md](./SOURCE.md) / [docs/firefox/SOURCE.zh-CN.md](./docs/firefox/SOURCE.zh-CN.md)。详见 [STORE.zh-CN.md](./STORE.zh-CN.md)。可选 CRX（本地 `dist.pem`，不要提交）：`pnpm build:crx`。
 
 已上架地址：  
 https://chromewebstore.google.com/detail/devtools-unlock/cehphgjpnlhlonahcldfbomncionnhdo
 
 ## GitHub Release
 
-先把 `package.json` 与 `extension/manifest.json` 升到同一版本，然后：
+先把 `package.json` 的 `version` 升上去（构建时写入 `dist/chrome/manifest.json` / `dist/firefox/manifest.json`），然后：
 
 ```bash
 pnpm release:github:dry    # 打包并预览 Release Notes
@@ -101,14 +126,18 @@ Cursor 命令：`/github-release`（见 `.cursor/commands/github-release.md`）�
 
 | 路径 | 内容 | 是否进 zip |
 |------|------|:----------:|
-| `extension/` | MV3 扩展本体 | 是 |
-| `docs/` | 技术文档 | 否 |
+| `dist/chrome` / `dist/firefox` | MV3 扩展本体（按浏览器） | 商店 zip |
+| `src/` + 构建配置 | 扩展源码 | AMO `*.firefox-sources.zip`（无 `node_modules`） |
+| `docs/` | 技术文档 | 否（源码包会带 firefox 说明） |
 | `analysis/` | 原始/反混淆 JS | 否 |
 | `alternatives/` | 控制台版、Userscript | 否 |
+| `demo-site-vite/` | 本地演示站点 | 否 |
 
 ## 文档
 
 - [如何强制调试一个不让调试的网站](./docs/force-debug-blocked-sites.zh-CN.md) ([English](./docs/force-debug-blocked-sites.md))
+- [Firefox 附加组件](./docs/firefox/README.zh-CN.md) ([English](./docs/firefox/README.md))
+- [AMO 审核源码包](./docs/firefox/SOURCE.zh-CN.md) ([English](./docs/firefox/SOURCE.md))
 - [隐私政策](./PRIVACY.zh-CN.md) ([English](./PRIVACY.md))
 - [Chrome 网上应用店上架指南](./STORE.zh-CN.md) ([English](./STORE.md))
 

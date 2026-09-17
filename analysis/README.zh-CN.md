@@ -2,7 +2,7 @@
 
 > 中文 · [English](./README.md)
 
-本目录用于逆向与文档引用，**不要**打进 `extension/` 的 zip。
+本目录用于逆向与文档引用，**不要**打进 `dist/` 的 zip。
 
 **样本来源**：[anikai.watch](https://anikai.watch/) 主 bundle（播放页等页面加载的 `scripts-*.js`）。如何从 live 站点定位并确认反调试指纹，见 [../docs/force-debug-blocked-sites.zh-CN.md](../docs/force-debug-blocked-sites.zh-CN.md)。
 

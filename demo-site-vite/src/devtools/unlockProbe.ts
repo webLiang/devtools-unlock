@@ -1,4 +1,4 @@
-/** Marker left by the Unlock extension in the MAIN world (see extension/unlock.js). */
+/** Marker left by the Unlock extension in the MAIN world (see src/pages/content/unlock/index.ts). */
 
 export function readUnlockProbe(): { installed: boolean } {
   return {

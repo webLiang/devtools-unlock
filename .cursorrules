@@ -1,0 +1,15 @@
+# devtools-unlock — Cursor entry
+
+Full map: **[AGENTS.md](AGENTS.md)**. Human docs: README.md / README.zh-CN.md.
+
+## Hard constraints
+
+- Single package (no Turborepo / extra workspace packages). `demo-site-vite/` stays independent.
+- Vite 8: `build.rolldownOptions`, not `rollupOptions`.
+- Do not enable `inlineVitePreloadScript`.
+- Manifest source is `manifest.js`. Version comes from `package.json`.
+- **unlock.js / embedWatch.js are classic IIFE** via `scripts/build-iife.mjs`. Do not put them on the Vite multi-entry graph. Do not use `"world": "MAIN"` on split Vite content entries.
+- UI copy in `public/_locales/**`; comments and `console.*` in English.
+- Conventional Commits (commitlint).
+
+Load unpacked from **`dist/chrome`** (Chrome) or **`dist/firefox`** (Firefox). After rebuild, Reload the extension then hard-refresh the page.

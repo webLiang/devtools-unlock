@@ -36,7 +36,7 @@ https://github.com/webLiang/devtools-unlock
 
 • MIT/ISC-style community project — no paywall inside the extension
 • No code obfuscation, no remote code loading, no ads, no tracking SDKs
-• The package you install from the Chrome Web Store matches the public repository (extension/ folder)
+• The package you install from the Chrome Web Store matches the public repository (`pnpm build` → `dist/chrome`)
 • Releases & changelog: https://github.com/webLiang/devtools-unlock/releases
 
 ★ SINGLE PURPOSE

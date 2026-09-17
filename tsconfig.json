@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    "noEmit": true,
+    "baseUrl": ".",
+    "allowJs": false,
+    "target": "esnext",
+    "module": "esnext",
+    "jsx": "react-jsx",
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "moduleResolution": "bundler",
+    "types": ["node", "chrome"],
+    "noFallthroughCasesInSwitch": true,
+    "allowSyntheticDefaultImports": true,
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true,
+    "moduleDetection": "force",
+    "paths": {
+      "@root/*": ["./*"],
+      "@src/*": ["src/*"],
+      "@assets/*": ["src/assets/*"],
+      "@pages/*": ["src/pages/*"],
+      "virtual:reload-on-update-in-background-script": ["./src/global.d.ts"],
+      "virtual:reload-on-update-in-view": ["./src/global.d.ts"],
+      "vite": ["./node_modules/vite/dist/node/index.d.ts"],
+      "@vitejs/plugin-react": ["./node_modules/@vitejs/plugin-react/dist/index.d.ts"],
+      "vitest/config": ["./node_modules/vitest/config.d.ts"]
+    }
+  },
+  "include": ["src", "utils", "vite.config.ts"]
+}

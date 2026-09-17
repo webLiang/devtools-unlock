@@ -23,7 +23,7 @@ Open `http://localhost:5173` (Vite default).
 
 ## Compare with Unlock on / off
 
-1. Load `../extension/` from `chrome://extensions/`
+1. Load **`../dist/chrome/`** from `chrome://extensions/` (run `pnpm build` in the repo root first)
 2. **Extension off** → refresh demo → open DevTools  
    - Expect punishment (blank / redirect / close, depending on defaults)
 3. **Enable unlock for this site** in the popup → page reloads → open DevTools  

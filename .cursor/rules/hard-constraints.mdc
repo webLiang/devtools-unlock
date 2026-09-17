@@ -1,0 +1,17 @@
+---
+description: Always-on constraints for DevTools Unlock (Vite 8 MV3)
+alwaysApply: true
+---
+
+# Hard constraints
+
+Read [AGENTS.md](../../AGENTS.md).
+
+- Single package. Do not add Turborepo or `packages/*`.
+- Vite 8: edit `build.rolldownOptions` in `vite.config.ts`, not `rollupOptions`.
+- Do not turn on `inlineVitePreloadScript`.
+- Manifest source is `manifest.js` (build writes `dist/chrome/manifest.json` or `dist/firefox/manifest.json`). Version comes from `package.json`.
+- i18n: `public/_locales/**/messages.json`. Comments and logs: English.
+- Commits: Conventional Commits (`feat` `fix` `docs` `chore` …).
+- Unpacked roots are `dist/chrome` and `dist/firefox`. Reload the extension after SW/content changes.
+- MAIN-world unlock is `src/pages/content/unlock/index.ts` → `dist/<browser>/unlock.js` (esbuild IIFE). Isolated embed watcher is `dist/<browser>/embedWatch.js`. Never code-split these with `import()`.

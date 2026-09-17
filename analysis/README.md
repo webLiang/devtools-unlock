@@ -2,7 +2,7 @@
 
 > English · [中文](./README.zh-CN.md)
 
-This folder is for reverse engineering and docs references. **Do not** include it in the `extension/` zip.
+This folder is for reverse engineering and docs references. **Do not** include it in the `dist/` zip.
 
 **Sample origin:** main bundles from [anikai.watch](https://anikai.watch/) (e.g. `scripts-*.js` on player pages). For live-site recon steps, see [../docs/force-debug-blocked-sites.md](../docs/force-debug-blocked-sites.md).
 

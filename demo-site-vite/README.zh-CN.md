@@ -23,7 +23,7 @@ npm run dev
 
 ## 对比测试（Unlock 开 / 关）
 
-1. `chrome://extensions/` 加载上级目录的 `extension/`
+1. 在仓库根目录执行 `pnpm build` 后，于 `chrome://extensions/` 加载上级目录的 **`dist/chrome/`**
 2. **扩展关闭** → 刷新演示页 → 打开 DevTools  
    - 预期：页面被惩罚（空白/跳转/关页等）
 3. 在 popup **开启当前网站解锁** → 页面刷新 → 打开 DevTools  

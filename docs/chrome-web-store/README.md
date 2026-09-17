@@ -76,8 +76,8 @@ docs/chrome-web-store/
 
 ### A. 包体
 
-- [ ] `pnpm zip` → `releases/devtools-unlock_v{version}.zip`（仅 `extension/`）
-- [ ] `package.json` 与 `extension/manifest.json` 版本一致
+- [ ] `pnpm build:zip` → `releases/devtools-unlock_v{version}.zip`（仅 `dist/chrome/` 内容）
+- [ ] `package.json` 版本与 `dist/chrome/manifest.json` 一致
 - [ ] 干净环境加载 zip 解压内容，开关与注入日志正常
 
 ### B. 商店 Listing（Dashboard → Store listing）

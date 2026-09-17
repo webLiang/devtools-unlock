@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * Pack ZIP, generate release notes, optionally commit / tag / push / create GitHub Release.
- * Adapted from Pornhub-Video-Downloader-Plugin-v3 (zip-only; locales under extension/_locales).
+ * Adapted from Pornhub-Video-Downloader-Plugin-v3 (locales under public/_locales).
  */
 import { execSync, spawnSync } from 'node:child_process';
 import fs from 'node:fs';
@@ -10,7 +10,7 @@ import { fileURLToPath } from 'node:url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
-const LOCALES_DIR = path.join(ROOT, 'extension', '_locales');
+const LOCALES_DIR = path.join(ROOT, 'public', '_locales');
 const RELEASES_DIR = path.join(ROOT, 'releases');
 const REPO = 'webLiang/devtools-unlock';
 const RELEASES_URL = `https://github.com/${REPO}/releases`;
@@ -56,6 +56,14 @@ const THEME_HIGHLIGHTS = {
     en: 'Published on the Chrome Web Store; README and docs now link to the official listing.',
     zh_CN: '已上架 Chrome 网上应用店；README 与文档已同步官方商店链接。',
   },
+  firefoxSupport: {
+    en: 'Firefox 128+ add-on build (MAIN world, Gecko id) in addition to Chrome.',
+    zh_CN: '新增 Firefox 128+ 插件构建（MAIN world、Gecko ID），与 Chrome 并行。',
+  },
+  boilerplate: {
+    en: 'Built with chrome-extension-boilerplate-ai (Vite 8 · MV3). Load unpacked from dist/chrome or dist/firefox.',
+    zh_CN: '基于 chrome-extension-boilerplate-ai（Vite 8 · MV3）构建，未打包扩展从 dist/chrome 或 dist/firefox 加载。',
+  },
 };
 
 /** Map i18n message keys to release themes. */
@@ -79,6 +87,8 @@ const COMMIT_THEME_RULES = [
     theme: 'storeListing',
     test: /chrome-web-store|chromewebstore|web store|网上应用店|store listing|上架/i,
   },
+  { theme: 'firefoxSupport', test: /firefox|gecko|amo|addons\.mozilla/i },
+  { theme: 'boilerplate', test: /boilerplate-ai|vite 8|unpacked from dist/i },
 ];
 
 /** @typedef {{ notesFile?: string, bodyFile?: string, assets: string[], dryRun: boolean, publish: boolean, skipBuild: boolean, commit: boolean, push: boolean, title?: string, commitMessage?: string }} CliOptions */
@@ -154,7 +164,7 @@ Options:
   --full                 Shorthand: --publish --commit --push (one-shot release)
   --commit               git add -A && git commit before tagging (use with --publish)
   --push                 git push current branch + release tag after publish
-  --skip-build           Skip pnpm zip
+  --skip-build           Skip pnpm build:zip / build:firefox:zip
   --body-file <path>     Use this markdown as the full release notes (skip auto-generation)
   --notes-file <path>    Append custom markdown to auto-generated release notes
   --commit-message <msg> Commit message (default: chore: release v<version>)
@@ -194,26 +204,9 @@ function runOrExit(cmd, opts = {}) {
   return result.stdout?.toString().trim() ?? '';
 }
 
-/** Read package.json name/version; sync extension/manifest.json to match. */
+/** Read package.json name/version (manifest.js copies version into dist at build time). */
 function readPackageMeta() {
   const pkg = JSON.parse(fs.readFileSync(path.join(ROOT, 'package.json'), 'utf8'));
-  const manifestPath = path.join(ROOT, 'extension', 'manifest.json');
-  const manifestText = fs.readFileSync(manifestPath, 'utf8');
-  const manifest = JSON.parse(manifestText);
-  if (pkg.version !== manifest.version) {
-    const next = manifestText.replace(
-      /^(\s*"version"\s*:\s*")[^"]+(")/m,
-      `$1${pkg.version}$2`,
-    );
-    if (next === manifestText) {
-      console.error(`could not sync extension/manifest.json version to ${pkg.version}`);
-      process.exit(1);
-    }
-    fs.writeFileSync(manifestPath, next);
-    console.log(
-      `synced: extension/manifest.json version ${manifest.version} → ${pkg.version} (from package.json)`,
-    );
-  }
   return { name: pkg.name, version: pkg.version };
 }
 
@@ -236,13 +229,16 @@ function getPreviousTag(version, tags) {
 
 /** Load messages.json at git ref; null if missing. */
 function loadMessagesAtRef(ref, locale) {
-  const filePath = `extension/_locales/${locale}/messages.json`;
-  try {
-    const raw = run(`git show ${ref}:${filePath}`);
-    return JSON.parse(raw);
-  } catch {
-    return null;
+  const candidates = [`public/_locales/${locale}/messages.json`, `extension/_locales/${locale}/messages.json`];
+  for (const filePath of candidates) {
+    try {
+      const raw = run(`git show ${ref}:${filePath}`);
+      return JSON.parse(raw);
+    } catch {
+      // try next path (pre-migration tags used extension/_locales)
+    }
   }
+  return null;
 }
 
 /** Load messages.json from working tree. */
@@ -410,10 +406,13 @@ function buildMultilingualSections(prevTag, commits) {
   return sections;
 }
 
-/** Build ZIP artifact path from package metadata. */
+/** Build ZIP artifact paths from package metadata. */
 function defaultArtifactPaths(name, version) {
   return {
     zip: path.join(RELEASES_DIR, `${name}_v${version}.zip`),
+    firefoxZip: path.join(RELEASES_DIR, `${name}_v${version}.firefox.zip`),
+    firefoxSourcesZip: path.join(RELEASES_DIR, `${name}_v${version}.firefox-sources.zip`),
+    crx: path.join(RELEASES_DIR, `${name}_v${version}.crx`),
   };
 }
 
@@ -442,9 +441,17 @@ function buildReleaseNotes({ version, prevTag, customNotesPath, commits, multili
   }
 
   lines.push('### Install', '');
-  lines.push(`Download the \`.zip\` from [GitHub Releases](${RELEASES_URL}).`, '');
+  lines.push(`Download \`.zip\` (Chrome) or \`.firefox.zip\` (Firefox 128+) from [GitHub Releases](${RELEASES_URL}).`, '');
   lines.push(
-    'Then open `chrome://extensions/` → enable **Developer mode** → **Load unpacked** (unzip first) or upload the zip via Chrome Web Store.',
+    'Chrome: `chrome://extensions/` → **Developer mode** → **Load unpacked** on `dist/chrome` (or unzip the Chrome zip; upload that zip to Chrome Web Store).',
+    '',
+  );
+  lines.push(
+    'Firefox (temporary): `about:debugging#/runtime/this-firefox` → **Load Temporary Add-on…** → `manifest.json` from the unzipped Firefox build.',
+    '',
+  );
+  lines.push(
+    'AMO reviewers: download `.firefox-sources.zip`, then `pnpm install` && `pnpm build:firefox` (see `SOURCE.md` in that archive).',
     '',
   );
 
@@ -578,7 +585,7 @@ function main() {
     }
     if (existing) {
       console.error(`Release ${tag} already exists: ${existing}`);
-      console.error('Bump package.json and extension/manifest.json version before publishing.');
+      console.error('Bump package.json version before publishing (manifest.js reads it at build time).');
       process.exit(1);
     }
   }
@@ -588,13 +595,21 @@ function main() {
   console.log(`Previous tag: ${prevTag || '(none)'}`);
 
   if (!options.skipBuild) {
-    console.log('\nRunning pnpm zip …');
-    runOrExit('pnpm zip', { inherit: true });
+    console.log('\nRunning pnpm build:zip …');
+    runOrExit('pnpm build:zip', { inherit: true });
+    console.log('\nRunning pnpm build:firefox:zip …');
+    runOrExit('pnpm build:firefox:zip', { inherit: true });
+    console.log('\nRunning pnpm pack:firefox:sources …');
+    runOrExit('pnpm pack:firefox:sources', { inherit: true });
   }
 
   const artifacts = defaultArtifactPaths(name, version);
   if (!fs.existsSync(artifacts.zip)) {
     console.error(`Missing artifact: ${artifacts.zip}`);
+    process.exit(1);
+  }
+  if (!fs.existsSync(artifacts.firefoxZip)) {
+    console.error(`Missing artifact: ${artifacts.firefoxZip}`);
     process.exit(1);
   }
 
@@ -641,7 +656,13 @@ function main() {
   console.log(`\nRelease notes written: ${notesPath}\n`);
   console.log(notes);
 
-  const assets = [artifacts.zip, ...options.assets.map(p => path.resolve(ROOT, p))];
+  const assets = [artifacts.zip, artifacts.firefoxZip, ...options.assets.map(p => path.resolve(ROOT, p))];
+  if (fs.existsSync(artifacts.firefoxSourcesZip)) {
+    assets.push(artifacts.firefoxSourcesZip);
+  }
+  if (fs.existsSync(artifacts.crx)) {
+    assets.push(artifacts.crx);
+  }
   for (const file of assets) {
     if (!fs.existsSync(file)) {
       console.error(`Asset not found: ${file}`);
