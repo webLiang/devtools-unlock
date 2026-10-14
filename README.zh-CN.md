@@ -143,6 +143,30 @@ Cursor 命令：`/github-release`（见 `.cursor/commands/github-release.md`）�
 
 ---
 
+## 支持本项目
+
+**如果这个扩展帮你省了时间，请给本仓库点 Star** — 这是支持维护、也让更多人发现它最快的方式。
+
+**[Star webLiang/devtools-unlock](https://github.com/webLiang/devtools-unlock)**
+
+<div align="center">
+
+<img src="./images/star-devtools-unlock.gif" alt="在 GitHub 上为本仓库点 Star 的操作演示" width="760" />
+
+</div>
+
+## Star History
+
+<a href="https://star-history.dera.page/#webLiang/devtools-unlock&Date">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://star-history.dera.page/svg?repos=webLiang/devtools-unlock&type=Date&theme=dark" />
+    <source media="(prefers-color-scheme: light)" srcset="https://star-history.dera.page/svg?repos=webLiang/devtools-unlock&type=Date" />
+    <img alt="Star History Chart" src="https://star-history.dera.page/svg?repos=webLiang/devtools-unlock&type=Date" />
+  </picture>
+</a>
+
+---
+
 ## 更多 Chrome 扩展
 
 同一作者的其他开源扩展：

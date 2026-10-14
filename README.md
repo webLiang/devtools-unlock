@@ -142,6 +142,30 @@ Cursor command: `/github-release` (see `.cursor/commands/github-release.md`).
 
 ---
 
+## Support this project
+
+**If this extension saved you time, please star this repo** — it is the fastest way to support maintenance and help others find it.
+
+**[Star webLiang/devtools-unlock](https://github.com/webLiang/devtools-unlock)**
+
+<div align="center">
+
+<img src="./images/star-devtools-unlock.gif" alt="How to star this repository on GitHub" width="760" />
+
+</div>
+
+## Star History
+
+<a href="https://star-history.dera.page/#webLiang/devtools-unlock&Date">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://star-history.dera.page/svg?repos=webLiang/devtools-unlock&type=Date&theme=dark" />
+    <source media="(prefers-color-scheme: light)" srcset="https://star-history.dera.page/svg?repos=webLiang/devtools-unlock&type=Date" />
+    <img alt="Star History Chart" src="https://star-history.dera.page/svg?repos=webLiang/devtools-unlock&type=Date" />
+  </picture>
+</a>
+
+---
+
 ## More Chrome extensions
 
 Other open-source tools from the same author:

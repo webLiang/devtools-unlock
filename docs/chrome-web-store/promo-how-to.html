@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1280, height=800" />
+    <title>DevTools Unlock Open · How to use</title>
+    <style>
+      :root {
+        --blue: #1a73e8;
+        --blue-dark: #1557c0;
+        --ink: #1a1a2e;
+        --muted: #5f6b7a;
+        --red: #d93025;
+        --green: #188038;
+        --page: #f4f7fb;
+        --chrome: #1e293b;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        width: 1280px;
+        height: 800px;
+        overflow: hidden;
+        background: var(--page);
+        color: var(--ink);
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      }
+
+      .top {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        height: 72px;
+        padding: 0 28px;
+        color: #fff;
+        background: linear-gradient(90deg, var(--blue), var(--blue-dark));
+      }
+
+      .top img {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgb(0 0 0 / 18%);
+      }
+
+      .top h1 {
+        margin: 0;
+        font-size: 22px;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+      }
+
+      .top p {
+        margin: 2px 0 0;
+        font-size: 13px;
+        opacity: 0.88;
+      }
+
+      .caption {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 72px;
+        padding: 0 24px;
+        text-align: center;
+      }
+
+      .caption strong {
+        font-size: 18px;
+        font-weight: 700;
+      }
+
+      .caption span {
+        margin-top: 4px;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .stage {
+        position: relative;
+        height: 656px;
+        padding: 8px 48px 28px;
+      }
+
+      .browser {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        overflow: hidden;
+        border-radius: 14px;
+        background: var(--chrome);
+        box-shadow: 0 18px 40px rgb(15 23 42 / 18%);
+      }
+
+      .titlebar {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        height: 46px;
+        padding: 0 14px;
+        flex-shrink: 0;
+      }
+
+      .dots {
+        display: flex;
+        gap: 6px;
+      }
+
+      .dots i {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+      }
+
+      .dots i:nth-child(1) {
+        background: #ff5f57;
+      }
+      .dots i:nth-child(2) {
+        background: #febc2e;
+      }
+      .dots i:nth-child(3) {
+        background: #28c840;
+      }
+
+      .url {
+        flex: 1;
+        height: 28px;
+        padding: 0 12px;
+        border-radius: 8px;
+        background: #0f172a;
+        color: #cbd5e1;
+        font-size: 12px;
+        line-height: 28px;
+      }
+
+      .ext {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 28px;
+        height: 28px;
+        border-radius: 6px;
+        background: #334155;
+      }
+
+      .ext img {
+        width: 18px;
+        height: 18px;
+        border-radius: 4px;
+        filter: grayscale(1) contrast(0.7);
+      }
+
+      body[data-scene='5'] .ext,
+      body[data-scene='6'] .ext,
+      body[data-scene='7'] .ext {
+        background: #1d4ed8;
+        box-shadow: 0 0 0 3px rgb(59 130 246 / 35%);
+      }
+
+      body[data-scene='5'] .ext img,
+      body[data-scene='6'] .ext img,
+      body[data-scene='7'] .ext img {
+        filter: none;
+      }
+
+      .viewport {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        min-height: 0;
+        background: #fff;
+      }
+
+      .page {
+        flex: 1;
+        min-height: 0;
+        padding: 28px 36px;
+        background: #f8fafc;
+      }
+
+      .page h2 {
+        margin: 0 0 6px;
+        font-size: 22px;
+      }
+
+      .page .sub {
+        margin: 0 0 18px;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.5;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 12px;
+      }
+
+      .stat {
+        padding: 12px 14px;
+        border-radius: 10px;
+        background: #fff;
+        border: 1px solid #e2e8f0;
+      }
+
+      .stat small {
+        display: block;
+        color: var(--muted);
+        font-size: 11px;
+      }
+
+      .stat b {
+        display: block;
+        margin-top: 4px;
+        font-size: 15px;
+      }
+
+      .no {
+        color: var(--red);
+      }
+
+      .yes {
+        color: var(--green);
+      }
+
+      .wiped {
+        display: none;
+        flex: 1;
+        align-items: center;
+        justify-content: center;
+        background: #fff;
+      }
+
+      .wiped-card {
+        text-align: center;
+        color: var(--red);
+      }
+
+      .wiped-card strong {
+        display: block;
+        font-size: 22px;
+      }
+
+      .wiped-card span {
+        display: block;
+        margin-top: 8px;
+        color: #94a3b8;
+        font-size: 13px;
+      }
+
+      .devtools {
+        display: none;
+        height: 188px;
+        padding: 12px 18px 14px;
+        background: #0f172a;
+        color: #e2e8f0;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        font-size: 12px;
+        flex-shrink: 0;
+      }
+
+      .dt-tabs {
+        display: flex;
+        gap: 18px;
+        margin-bottom: 10px;
+        color: #64748b;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        font-size: 12px;
+      }
+
+      .dt-tabs .on {
+        color: #fff;
+        font-weight: 600;
+        box-shadow: 0 2px 0 #3b82f6;
+      }
+
+      .log {
+        margin: 0 0 6px;
+        line-height: 1.45;
+      }
+
+      .log.ok {
+        color: #86efac;
+      }
+
+      .log.info {
+        color: #93c5fd;
+      }
+
+      .popup {
+        display: none;
+        position: absolute;
+        top: 8px;
+        right: 12px;
+        width: 280px;
+        padding: 16px;
+        border-radius: 12px;
+        background: #fafafa;
+        box-shadow: 0 16px 40px rgb(15 23 42 / 28%);
+        z-index: 5;
+        font-size: 14px;
+      }
+
+      .popup h3 {
+        margin: 0 0 4px;
+        font-size: 16px;
+      }
+
+      .popup .sub {
+        margin: 0 0 12px;
+        color: #666;
+        font-size: 12px;
+        line-height: 1.45;
+      }
+
+      .site {
+        margin: 0 0 10px;
+        padding: 8px 10px;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        background: #fff;
+        font-size: 12px;
+        color: #3c4043;
+      }
+
+      .toggle {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 12px;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        background: #fff;
+      }
+
+      .toggle i {
+        width: 16px;
+        height: 16px;
+        border: 1.5px solid #9aa0a6;
+        border-radius: 3px;
+        background: #fff;
+      }
+
+      body[data-scene='5'] .toggle i,
+      body[data-scene='6'] .toggle i,
+      body[data-scene='7'] .toggle i {
+        border-color: var(--blue);
+        background: var(--blue)
+          url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path fill="white" d="M6.2 11.2 3.4 8.4l1.2-1.2 1.6 1.6 4.2-4.2 1.2 1.2z"/></svg>')
+          center / 12px no-repeat;
+      }
+
+      .status {
+        margin-top: 8px;
+        font-size: 12px;
+      }
+
+      .status.off {
+        color: var(--red);
+      }
+
+      .status.on {
+        color: var(--green);
+      }
+
+      .hint {
+        margin-top: 12px;
+        padding: 8px 10px;
+        border-radius: 6px;
+        background: #eef3fc;
+        color: #3c4043;
+        font-size: 11px;
+        line-height: 1.45;
+      }
+
+      .kbd {
+        display: none;
+        position: absolute;
+        left: 50%;
+        bottom: 214px;
+        transform: translateX(-50%);
+        padding: 8px 16px;
+        border-radius: 10px;
+        background: #111827;
+        color: #fff;
+        font-size: 18px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        box-shadow: 0 10px 24px rgb(0 0 0 / 28%);
+        z-index: 6;
+      }
+
+      .cursor {
+        position: absolute;
+        z-index: 8;
+        width: 22px;
+        height: 22px;
+        filter: drop-shadow(0 1px 2px rgb(0 0 0 / 45%));
+        pointer-events: none;
+      }
+
+      .title-card {
+        display: none;
+        height: 100%;
+        padding: 36px 48px 0;
+      }
+
+      .hero {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        height: 520px;
+        padding: 0 56px;
+        border-radius: 16px;
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        box-shadow: 0 10px 30px rgb(15 23 42 / 8%);
+      }
+
+      .hero h2 {
+        margin: 0 0 10px;
+        font-size: 34px;
+      }
+
+      .hero p {
+        margin: 0 0 28px;
+        color: var(--muted);
+        font-size: 16px;
+      }
+
+      .hero ol {
+        margin: 0;
+        padding-left: 22px;
+        font-size: 18px;
+        line-height: 2;
+      }
+
+      .recap {
+        display: none;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 16px;
+        height: 100%;
+        padding: 8px 8px 0;
+      }
+
+      .recap article {
+        padding: 28px 22px;
+        border-radius: 14px;
+        background: #fff;
+        border: 1px solid #e2e8f0;
+      }
+
+      .recap b {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 36px;
+        height: 36px;
+        margin-bottom: 14px;
+        border-radius: 50%;
+        background: var(--blue);
+        color: #fff;
+        font-size: 16px;
+      }
+
+      .recap h3 {
+        margin: 0 0 8px;
+        font-size: 18px;
+      }
+
+      .recap p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.55;
+      }
+
+      /* Scene visibility */
+      body[data-scene='0'] .browser,
+      body[data-scene='0'] .cursor,
+      body[data-scene='7'] .browser,
+      body[data-scene='7'] .cursor {
+        display: none;
+      }
+
+      body[data-scene='0'] .title-card {
+        display: block;
+      }
+
+      body[data-scene='7'] .recap {
+        display: grid;
+      }
+
+      body[data-scene='2'] .kbd {
+        display: block;
+      }
+
+      body[data-scene='2'] .devtools,
+      body[data-scene='3'] .devtools,
+      body[data-scene='6'] .devtools {
+        display: block;
+      }
+
+      body[data-scene='3'] .page,
+      body[data-scene='4'] .page,
+      body[data-scene='5'] .page {
+        display: none;
+      }
+
+      body[data-scene='3'] .wiped,
+      body[data-scene='4'] .wiped,
+      body[data-scene='5'] .wiped {
+        display: flex;
+      }
+
+      body[data-scene='4'] .popup,
+      body[data-scene='5'] .popup {
+        display: block;
+      }
+
+      body[data-scene='1'] .cursor {
+        left: 430px;
+        top: 250px;
+      }
+      body[data-scene='2'] .cursor {
+        left: 620px;
+        top: 430px;
+      }
+      body[data-scene='3'] .cursor {
+        left: 980px;
+        top: 92px;
+      }
+      body[data-scene='4'] .cursor {
+        left: 990px;
+        top: 228px;
+      }
+      body[data-scene='5'] .cursor {
+        left: 1006px;
+        top: 236px;
+      }
+      body[data-scene='6'] .cursor {
+        left: 220px;
+        top: 470px;
+      }
+
+      .caption [data-for] {
+        display: none;
+      }
+
+      body[data-scene='0'] .caption [data-for='0'],
+      body[data-scene='1'] .caption [data-for='1'],
+      body[data-scene='2'] .caption [data-for='2'],
+      body[data-scene='3'] .caption [data-for='3'],
+      body[data-scene='4'] .caption [data-for='4'],
+      body[data-scene='5'] .caption [data-for='5'],
+      body[data-scene='6'] .caption [data-for='6'],
+      body[data-scene='7'] .caption [data-for='7'] {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+    </style>
+  </head>
+  <body data-scene="0" data-lang="en">
+    <header class="top">
+      <img src="images/icon-128.png" alt="" />
+      <div>
+        <h1 data-i18n="title">DevTools Unlock Open · How to use</h1>
+        <p data-i18n="subtitle">Local demo (localhost:5173) · unlock OFF wipes the page · unlock ON keeps DevTools usable</p>
+      </div>
+    </header>
+
+    <div class="caption">
+      <div data-for="0">
+        <strong data-i18n="c0s">See unlock OFF vs ON on the local demo</strong>
+        <span data-i18n="c0e">Same flow as demo-site-vite: disable-devtool on localhost:5173</span>
+      </div>
+      <div data-for="1">
+        <strong data-i18n="c1s">1. Open the target page (unlock is OFF by default)</strong>
+        <span data-i18n="c1e">Page loads normally while DevTools is closed</span>
+      </div>
+      <div data-for="2">
+        <strong data-i18n="c2s">2. Press F12 to open DevTools</strong>
+        <span data-i18n="c2e">Anti-debug scripts start detecting the inspector</span>
+      </div>
+      <div data-for="3">
+        <strong data-i18n="c3s">Unlock OFF: the page is wiped — you cannot debug</strong>
+        <span data-i18n="c3e">Without unlock: DOM wipe / blank page (disable-devtool)</span>
+      </div>
+      <div data-for="4">
+        <strong data-i18n="c4s">3. Click the toolbar icon and enable unlock for this site</strong>
+        <span data-i18n="c4e">Per-site only — default is OFF everywhere</span>
+      </div>
+      <div data-for="5">
+        <strong data-i18n="c5s">The page reloads once after you turn it on</strong>
+        <span data-i18n="c5e">Unlock enabled · reload applies document_start hooks</span>
+      </div>
+      <div data-for="6">
+        <strong data-i18n="c6s">Open DevTools again — the page stays, debugging works</strong>
+        <span data-i18n="c6e">Console shows [devtools-unlock] injected — Elements / Network work</span>
+      </div>
+      <div data-for="7">
+        <strong data-i18n="c7s">Remember: per-site only, off by default</strong>
+        <span data-i18n="c7e">Hostname whitelist only · no analytics · no remote code</span>
+      </div>
+    </div>
+
+    <div class="stage">
+      <section class="title-card">
+        <div class="hero">
+          <h2 data-i18n="heroTitle">How to use in 3 steps</h2>
+          <p data-i18n="heroLead">
+            The local demo site ships disable-devtool. With the extension off, opening DevTools blanks
+            the page. Turn the toggle on, and you can inspect it normally.
+          </p>
+          <ol>
+            <li data-i18n="hero1">Open the page with unlock off → press F12 → blank page</li>
+            <li data-i18n="hero2">Click the toolbar icon and check Enable unlock for this site</li>
+            <li data-i18n="hero3">After reload, open DevTools again → content stays, Console shows the inject log</li>
+          </ol>
+        </div>
+      </section>
+
+      <section class="recap">
+        <article>
+          <b>1</b>
+          <h3>Unlock OFF</h3>
+          <p data-i18n="recap1">After DevTools opens, anti-debug scripts wipe the page. Elements / Network are unusable.</p>
+        </article>
+        <article>
+          <b>2</b>
+          <h3>Toggle ON</h3>
+          <p data-i18n="recap2">Applies to this hostname only. Reloads once, and can cover iframe hosts found on the tab.</p>
+        </article>
+        <article>
+          <b>3</b>
+          <h3>Debug normally</h3>
+          <p data-i18n="recap3">The page stays usable. Console shows [devtools-unlock] injected so you can keep inspecting.</p>
+        </article>
+      </section>
+
+      <div class="browser">
+        <div class="titlebar">
+          <div class="dots"><i></i><i></i><i></i></div>
+          <div class="url">http://localhost:5173/</div>
+          <div class="ext"><img src="images/icon-128.png" alt="" /></div>
+        </div>
+        <div class="viewport">
+          <div class="page">
+            <h2>disable-devtool × DevTools Unlock demo</h2>
+            <p class="sub">
+              Local Vite page loads npm <code>disable-devtool</code> (interval=200). Compare DevTools
+              with the extension off vs on.
+            </p>
+            <div class="grid">
+              <div class="stat">
+                <small>DevTools Unlock injected</small>
+                <b class="injected-flag no">No</b>
+              </div>
+              <div class="stat">
+                <small>DisableDevtool.isRunning</small>
+                <b>true</b>
+              </div>
+              <div class="stat">
+                <small>Page status</small>
+                <b class="page-flag yes">Content visible</b>
+              </div>
+            </div>
+          </div>
+          <div class="wiped">
+            <div class="wiped-card">
+              <strong data-i18n="wiped">Page wiped</strong>
+              <span>disable-devtool rewriteHTML · blank document</span>
+            </div>
+          </div>
+          <div class="devtools">
+            <div class="dt-tabs">
+              <span>Elements</span>
+              <span class="on">Console</span>
+              <span>Network</span>
+              <span>Sources</span>
+            </div>
+            <div class="console-off">
+              <p class="log">DevTools detected — punishing page…</p>
+              <p class="log">location.reload() / document wipe</p>
+            </div>
+            <div class="console-on" style="display: none">
+              <p class="log">[devtools-unlock] injected — DevTools should work normally</p>
+              <p class="log info">Unlock hooks: timers, location redirects, DOM wipe callbacks</p>
+              <p class="log ok">Forced reload blocked</p>
+              <p class="log ok">Root HTML wipe blocked</p>
+            </div>
+          </div>
+          <aside class="popup">
+            <h3>DevTools Unlock Open</h3>
+            <p class="sub">Restore DevTools on anti-debug sites</p>
+            <div class="site">localhost</div>
+            <label class="toggle"><i></i><span>Enable unlock for this site</span></label>
+            <div class="status-line status off">Unlock disabled for this site</div>
+            <div class="hint">Applies to this site only (incl. embed hosts). Page reloads after toggle.</div>
+          </aside>
+        </div>
+      </div>
+
+      <div class="kbd">F12</div>
+      <svg class="cursor" viewBox="0 0 24 24" aria-hidden="true">
+        <path fill="#fff" stroke="#111" stroke-width="1.2" d="M4 2.8 19.5 14.2l-6.2.7 3.4 7.2-2.7 1.3-3.4-7.3-4.8 4.2z" />
+      </svg>
+    </div>
+
+    <script>
+      /** UI copy for the store how-to promo (English default; ?lang=zh for Chinese). */
+      const COPY = {
+        en: {
+          title: 'DevTools Unlock Open · How to use',
+          subtitle: 'Local demo (localhost:5173) · unlock OFF wipes the page · unlock ON keeps DevTools usable',
+          c0s: 'See unlock OFF vs ON on the local demo',
+          c0e: 'Same flow as demo-site-vite: disable-devtool on localhost:5173',
+          c1s: '1. Open the target page (unlock is OFF by default)',
+          c1e: 'Page loads normally while DevTools is closed',
+          c2s: '2. Press F12 to open DevTools',
+          c2e: 'Anti-debug scripts start detecting the inspector',
+          c3s: 'Unlock OFF: the page is wiped — you cannot debug',
+          c3e: 'Without unlock: DOM wipe / blank page (disable-devtool)',
+          c4s: '3. Click the toolbar icon and enable unlock for this site',
+          c4e: 'Per-site only — default is OFF everywhere',
+          c5s: 'The page reloads once after you turn it on',
+          c5e: 'Unlock enabled · reload applies document_start hooks',
+          c6s: 'Open DevTools again — the page stays, debugging works',
+          c6e: 'Console shows [devtools-unlock] injected — Elements / Network work',
+          c7s: 'Remember: per-site only, off by default',
+          c7e: 'Hostname whitelist only · no analytics · no remote code',
+          heroTitle: 'How to use in 3 steps',
+          heroLead:
+            'The local demo site ships disable-devtool. With the extension off, opening DevTools blanks the page. Turn the toggle on, and you can inspect it normally.',
+          hero1: 'Open the page with unlock off → press F12 → blank page',
+          hero2: 'Click the toolbar icon and check Enable unlock for this site',
+          hero3: 'After reload, open DevTools again → content stays, Console shows the inject log',
+          recap1: 'After DevTools opens, anti-debug scripts wipe the page. Elements / Network are unusable.',
+          recap2: 'Applies to this hostname only. Reloads once, and can cover iframe hosts found on the tab.',
+          recap3: 'The page stays usable. Console shows [devtools-unlock] injected so you can keep inspecting.',
+          wiped: 'Page wiped',
+        },
+        zh: {
+          title: 'DevTools Unlock Open · 使用演示',
+          subtitle: '本地演示 localhost:5173 · 关闭开关会白屏 · 打开开关后可正常调试',
+          c0s: '用本地演示站看开关前后的差别',
+          c0e: '与 demo-site-vite 相同：localhost:5173 上的 disable-devtool',
+          c1s: '1. 打开目标页面（扩展默认关闭）',
+          c1e: '未打开 DevTools 时，页面内容正常显示',
+          c2s: '2. 按 F12 打开开发者工具',
+          c2e: '反调试脚本开始检测开发者工具',
+          c3s: '未开开关：页面被清空，无法调试',
+          c3e: '不解锁时：DOM 被清空 / 白屏（disable-devtool）',
+          c4s: '3. 点击工具栏图标，打开当前网站解锁',
+          c4e: '只对当前站点生效，默认全部关闭',
+          c5s: '开关打开后页面会刷新一次',
+          c5e: '解锁已开启 · 刷新后 document_start 钩子才会生效',
+          c6s: '再开 DevTools：页面还在，可以正常调试',
+          c6e: 'Console 出现 [devtools-unlock] injected，Elements / Network 可用',
+          c7s: '记住：按站点开启，默认全部关闭',
+          c7e: '仅 hostname 白名单 · 无统计 · 无远程代码',
+          heroTitle: '三步使用',
+          heroLead:
+            '本地演示站已接入 disable-devtool。不开启扩展时打开 DevTools 会白屏；打开开关后即可正常调试。',
+          hero1: '打开页面，扩展保持关闭 → 按 F12 → 白屏',
+          hero2: '点击工具栏图标，勾选 Enable unlock for this site',
+          hero3: '页面刷新后再开 DevTools → 内容还在，Console 有注入日志',
+          recap1: '打开 DevTools 后，反调试脚本清空页面，Elements / Network 无法使用。',
+          recap2: '只对当前 hostname 生效。打开后自动刷新，并覆盖本页已发现的 iframe 主机。',
+          recap3: '页面保持可用，Console 出现 [devtools-unlock] injected，可继续排查。',
+          wiped: '页面已被清空',
+        },
+      };
+
+      /** Apply scene from ?scene=N so the recorder can capture each step. */
+      const params = new URLSearchParams(location.search);
+      const scene = params.get('scene');
+      if (scene != null && scene !== '') {
+        document.body.dataset.scene = String(scene);
+      }
+
+      /** Fill [data-i18n] nodes from COPY[lang]. */
+      function applyLang(lang) {
+        const pack = COPY[lang] || COPY.en;
+        document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+        document.body.dataset.lang = lang === 'zh' ? 'zh' : 'en';
+        document.querySelectorAll('[data-i18n]').forEach(node => {
+          const key = node.getAttribute('data-i18n');
+          if (key && pack[key]) {
+            node.textContent = pack[key];
+          }
+        });
+      }
+
+      const langParam = (params.get('lang') || 'en').toLowerCase();
+      applyLang(langParam === 'zh' ? 'zh' : 'en');
+
+      /** Swap console / status copy once unlock is on. */
+      function syncUnlocked() {
+        const on = ['5', '6', '7'].includes(document.body.dataset.scene);
+        const injected = document.querySelector('.injected-flag');
+        const pageFlag = document.querySelector('.page-flag');
+        const status = document.querySelector('.status-line');
+        const consoleOff = document.querySelector('.console-off');
+        const consoleOn = document.querySelector('.console-on');
+        if (injected) {
+          injected.textContent = on ? 'Yes' : 'No';
+          injected.className = 'injected-flag ' + (on ? 'yes' : 'no');
+        }
+        if (pageFlag) {
+          pageFlag.textContent = on ? 'Content visible' : 'Content visible';
+        }
+        if (status) {
+          status.textContent = on ? 'Unlock enabled for this site' : 'Unlock disabled for this site';
+          status.className = 'status-line status ' + (on ? 'on' : 'off');
+        }
+        if (consoleOff && consoleOn) {
+          const unlockedView = document.body.dataset.scene === '6';
+          consoleOff.style.display = unlockedView ? 'none' : 'block';
+          consoleOn.style.display = unlockedView ? 'block' : 'none';
+        }
+      }
+
+      syncUnlocked();
+    </script>
+  </body>
+</html>
