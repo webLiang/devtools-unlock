@@ -1,0 +1,14 @@
+---
+description: Keep public commits on the GitHub noreply identity
+alwaysApply: true
+---
+
+# Public git identity
+
+This repository is public on GitHub under `webLiang`.
+
+- Author and committer name: `webLiang`
+- Author and committer email: `38065991+webLiang@users.noreply.github.com`
+- Do not pass `--author`. Do not set `GIT_AUTHOR_EMAIL` or `GIT_COMMITTER_EMAIL`.
+- Do not change the global git identity. Remotes under `github.com/webLiang` already use the noreply address.
+- The pre-commit hook rejects any other author or committer.
